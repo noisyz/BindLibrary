@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/BindExample/BindExample.iml" filepath="$PROJECT_DIR$/BindExample/BindExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/BindLibrary.iml" filepath="$PROJECT_DIR$/BindLibrary.iml" />
-      <module fileurl="file://$PROJECT_DIR$/DataBindingLibrary/BindLibrary-BindLibrary.iml" filepath="$PROJECT_DIR$/DataBindingLibrary/BindLibrary-BindLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DataBindingLibrary/DataBindingLibrary.iml" filepath="$PROJECT_DIR$/DataBindingLibrary/DataBindingLibrary.iml" />
     </modules>
   </component>
 </project>
