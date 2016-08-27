@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.annotations;
+package com.noisyz.bindlibrary.annotations;
 
 /**
  * Created by Oleg on 18.03.2016.

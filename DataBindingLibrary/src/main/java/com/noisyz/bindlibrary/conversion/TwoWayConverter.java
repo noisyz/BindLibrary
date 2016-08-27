@@ -1,9 +1,9 @@
-package com.noisyz.databindinglibrary.conversion;
+package com.noisyz.bindlibrary.conversion;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public abstract class TwoWayConverter<T extends Object, V extends Object> {
+public abstract class TwoWayConverter<T, V> {
 
     private Converter converterToUi = new Converter<T, V>() {
         @Override

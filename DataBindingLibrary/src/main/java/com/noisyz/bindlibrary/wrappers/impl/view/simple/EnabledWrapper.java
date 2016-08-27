@@ -1,8 +1,8 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view.simple;
+package com.noisyz.bindlibrary.wrappers.impl.view.simple;
 
 import android.view.View;
 
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 /**
  * Created by Oleg on 18.03.2016.

@@ -1,36 +1,39 @@
 package com.noisyz.bindlibrary.wrappers;
 
-import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
-import com.noisyz.databindinglibrary.conversion.Converter;
-import com.noisyz.databindinglibrary.conversion.EmptyConverter;
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.base.AbsUIBinder;
+import com.noisyz.bindlibrary.conversion.Converter;
+import com.noisyz.bindlibrary.conversion.EmptyConverter;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public abstract class PropertyViewWrapper<V extends AbsViewWrapper> extends AbsUIBinder implements ObjectBinder, AbsViewWrapper.OnViewValueChangedListener {
+public abstract class PropertyViewWrapper<VW extends AbsViewWrapper> extends AbsUIBinder implements ObjectBinder, AbsViewWrapper.OnViewValueChangedListener {
 
     private Converter updateUIConverter = new EmptyConverter(), updateObjectValueConverter = new EmptyConverter();
 
-    private V v;
-    private Object object;
+    private VW vw;
+    private String propertyName;
 
-    public PropertyViewWrapper(V v, Object object) {
-        this.object = object;
-        this.v = v;
-        this.v.setOnViewValueChangedListener(this);
+    public PropertyViewWrapper(VW vw, Object object) {
+        super(object);
+        this.vw = vw;
+        this.vw.setOnViewValueChangedListener(this);
     }
 
-    @Override
-    public void setObject(Object object) {
-        this.object = object;
+    public void setPropertyName(String propertyName) {
+        this.propertyName = propertyName;
+    }
+
+    public String getPropertyName() {
+        return propertyName;
     }
 
     @Override
     public void bindUI() {
         Object value = getUIBindValue();
-        if (v != null && value != null) {
-            v.bindUI(value);
+        if (vw != null && value != null) {
+            vw.bindUI(value);
         }
     }
 
@@ -48,7 +51,8 @@ public abstract class PropertyViewWrapper<V extends AbsViewWrapper> extends AbsU
     public void bindObject(Object value) {
         Object convertedValue = getUpdateObjectValueConverter().
                 getConvertedValue(value);
-        updateObjectByValue(convertedValue);
+        if (convertedValue != null)
+            updateObjectByValue(convertedValue);
     }
 
     public void setUpdateUIConverter(Converter converter) {
@@ -71,16 +75,15 @@ public abstract class PropertyViewWrapper<V extends AbsViewWrapper> extends AbsU
         return object;
     }
 
-    protected V getViewWrapper() {
-        return v;
+    protected VW getViewWrapper() {
+        return vw;
     }
 
     @Override
     public void release() {
         super.release();
-        this.v.release();
-        this.v = null;
-        this.object = null;
+        this.vw.release();
+        this.vw = null;
         this.updateObjectValueConverter = null;
         this.updateUIConverter = null;
     }

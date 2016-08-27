@@ -1,61 +1,61 @@
-package com.noisyz.databindinglibrary.bind.base.impl.adapter.expandable;
+package com.noisyz.bindlibrary.base.impl.adapter.expandable;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
-import com.noisyz.databindinglibrary.beans.BindObject;
-import com.noisyz.databindinglibrary.beans.abs.ParentObject;
-import com.noisyz.databindinglibrary.beans.abs.SelectableObject;
-import com.noisyz.databindinglibrary.bind.base.impl.ObjectDataBinder;
-import com.noisyz.databindinglibrary.callback.clickevent.OnElementClickListener;
-import com.noisyz.databindinglibrary.callback.clickevent.OnElementClickListenerWrapper;
-import com.noisyz.databindinglibrary.callback.clickevent.OnItemClickListener;
+import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+import com.noisyz.bindlibrary.callback.ChildrenProvider;
+import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListener;
+import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListenerWrapper;
+import com.noisyz.bindlibrary.callback.clickevent.OnItemClickListener;
 
 import java.util.List;
 
 /**
  * Created by oleg on 15.08.16.
  */
-public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extends BindObject> extends BaseExpandableListAdapter {
-    protected List<T> itemList;
+public class ExpandableBindAdapter extends BaseExpandableListAdapter {
+    protected List itemList;
     private OnItemClickListener onParentItemClickListener, onChildItemClickListener;
     private List<OnElementClickListenerWrapper> parentElementsClickWrappers, childElementsClickWrappers;
+    private ChildrenProvider childrenProvider;
     private int parentLayoutID, childLayoutID;
 
-    public ExpandableBindAdapter(List<T> itemList, int parentLayoutID, int childLayoutID) {
+    public ExpandableBindAdapter(List itemList, int parentLayoutID, int childLayoutID, ChildrenProvider childrenProvider) {
         this.itemList = itemList;
         this.parentLayoutID = parentLayoutID;
         this.childLayoutID = childLayoutID;
+        this.childrenProvider = childrenProvider;
     }
 
-    public ExpandableBindAdapter<T, C> setOnElementClickListener(int elementId, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnElementClickListener(int elementId, OnElementClickListener onClickListener) {
         parentElementsClickWrappers.add(new OnElementClickListenerWrapper(elementId, onClickListener));
         return this;
     }
 
-    public ExpandableBindAdapter<T, C> setOnElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
         parentElementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }
 
-    public ExpandableBindAdapter<T, C> setOnItemClickListener(OnItemClickListener onItemClickListener) {
+    public ExpandableBindAdapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onParentItemClickListener = onItemClickListener;
         return this;
     }
 
-    public ExpandableBindAdapter<T, C> setOnChildElementClickListener(int elementId, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnChildElementClickListener(int elementId, OnElementClickListener onClickListener) {
         childElementsClickWrappers.add(new OnElementClickListenerWrapper(elementId, onClickListener));
         return this;
     }
 
-    public ExpandableBindAdapter<T, C> setOnChildElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnChildElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
         childElementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }
 
-    public ExpandableBindAdapter<T, C> setOnChildItemClickListener(OnItemClickListener onItemClickListener) {
+    public ExpandableBindAdapter setOnChildItemClickListener(OnItemClickListener onItemClickListener) {
         this.onChildItemClickListener = onItemClickListener;
         return this;
     }
@@ -67,7 +67,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
 
     @Override
     public int getChildrenCount(int position) {
-        return itemList.get(position).getChilds().size();
+        return childrenProvider.getChildren(itemList.get(position)).size();
     }
 
     @Override
@@ -77,7 +77,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return itemList.get(groupPosition).getChilds().get(childPosition);
+        return childrenProvider.getChildren(itemList.get(childPosition)).size();
     }
 
     @Override
@@ -101,15 +101,17 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
 
     @Override
     public View getGroupView(final int position, boolean b, View view, ViewGroup viewGroup) {
-        final T t = itemList.get(position);
+        final Object object = itemList.get(position);
         BinderHolder binderHolder = null;
         if (view == null) {
             binderHolder = new BinderHolder();
             view = LayoutInflater.from(viewGroup.getContext()).inflate(parentLayoutID, null);
-            binderHolder.objectDataBinder = new ObjectDataBinder<T>(t).registerView(view);
+            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
             view.setTag(binderHolder);
-        } else binderHolder = (BinderHolder) view.getTag();
-        binderHolder.objectDataBinder.setObject(t);
+        } else {
+            binderHolder = (BinderHolder) view.getTag();
+            binderHolder.objectDataBinder.setObject(object);
+        }
         binderHolder.objectDataBinder.bindUI();
 
         final View finalView = view;
@@ -118,7 +120,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onParentItemClickListener.onItemClick(finalView, position, t);
+                    onParentItemClickListener.onItemClick(finalView, position, object);
                 }
             });
         }
@@ -131,7 +133,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
                         element.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                wrapper.getOnClickListener().onElementClick(finalView, elementId, position, t);
+                                wrapper.getOnClickListener().onElementClick(finalView, elementId, position, object);
                             }
                         });
                     }
@@ -142,15 +144,17 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
 
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean b, View view, ViewGroup viewGroup) {
-        final C c = (C) itemList.get(groupPosition).getChilds().get(childPosition);
+        final Object object = getChild(groupPosition, childPosition);
         BinderHolder binderHolder = null;
         if (view == null) {
             binderHolder = new BinderHolder();
             view = LayoutInflater.from(viewGroup.getContext()).inflate(childLayoutID, null);
-            binderHolder.objectDataBinder = new ObjectDataBinder<C>(c).registerView(view);
+            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
             view.setTag(binderHolder);
-        } else binderHolder = (BinderHolder) view.getTag();
-        binderHolder.objectDataBinder.setObject(c);
+        } else {
+            binderHolder = (BinderHolder) view.getTag();
+            binderHolder.objectDataBinder.setObject(object);
+        }
         binderHolder.objectDataBinder.bindUI();
 
         final View finalView = view;
@@ -159,7 +163,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onChildItemClickListener.onItemClick(finalView, childPosition, c);
+                    onChildItemClickListener.onItemClick(finalView, childPosition, object);
                 }
             });
         }
@@ -172,7 +176,7 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
                         element.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                wrapper.getOnClickListener().onElementClick(finalView, elementId, childPosition, c);
+                                wrapper.getOnClickListener().onElementClick(finalView, elementId, childPosition, object);
                             }
                         });
                     }
@@ -183,7 +187,6 @@ public class ExpandableBindAdapter<T extends BindObject & ParentObject, C extend
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        BindObject object = (BindObject) getChild(groupPosition, childPosition);
-        return object instanceof SelectableObject;
+        return false;
     }
 }

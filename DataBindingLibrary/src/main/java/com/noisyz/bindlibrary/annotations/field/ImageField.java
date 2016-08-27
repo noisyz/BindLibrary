@@ -1,7 +1,8 @@
-package com.noisyz.databindinglibrary.annotations.field;
+package com.noisyz.bindlibrary.annotations.field;
 
 
-import com.noisyz.databindinglibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.impl.PicassoImageProvider;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,5 +12,5 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageField {
-    Class<? extends ImageProvider> imageProvider();
+    Class<? extends ImageProvider> value();
 }

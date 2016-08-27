@@ -1,15 +1,18 @@
-package com.noisyz.databindinglibrary.bind.base.impl;
+package com.noisyz.bindlibrary.base.impl;
 
 import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
-import com.noisyz.databindinglibrary.bind.base.property.Property;
-import com.noisyz.databindinglibrary.bind.base.property.PropertyFactory;
-import com.noisyz.databindinglibrary.callback.DataUpdatedCallback;
-import com.noisyz.databindinglibrary.conversion.Converter;
+import com.noisyz.bindlibrary.base.AbsUIBinder;
+import com.noisyz.bindlibrary.base.ParentBinder;
+import com.noisyz.bindlibrary.base.UIBinder;
+import com.noisyz.bindlibrary.base.property.Property;
+import com.noisyz.bindlibrary.base.property.PropertyFactory;
+import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
+import com.noisyz.bindlibrary.conversion.Converter;
+import com.noisyz.bindlibrary.wrappers.ObjectBinder;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 
 import java.util.ArrayList;
@@ -19,21 +22,14 @@ import java.util.List;
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class ObjectDataBinder<O extends Object> extends AbsUIBinder implements View.OnAttachStateChangeListener {
+public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.OnAttachStateChangeListener {
 
     private List<Property> propertyList;
 
-    private O o;
-
     private View parentView;
 
-    public ObjectDataBinder(O o) {
-        this();
-        this.o = o;
-    }
-
-    public ObjectDataBinder() {
-        propertyList = new ArrayList<>();
+    public ObjectDataBinder(Object object) {
+        super(object);
     }
 
     public ObjectDataBinder registerView(Fragment fragment) {
@@ -48,7 +44,7 @@ public class ObjectDataBinder<O extends Object> extends AbsUIBinder implements V
 
     public ObjectDataBinder registerView(View parentView) {
         this.parentView = parentView;
-        propertyList = PropertyFactory.getPropertyList(this, o, parentView);
+        propertyList = PropertyFactory.getPropertyList(this, object, parentView);
         propertyList.removeAll(Collections.singleton(null));
         return this;
     }
@@ -109,7 +105,7 @@ public class ObjectDataBinder<O extends Object> extends AbsUIBinder implements V
 
     @Override
     public void setObject(Object object) {
-        this.o = (O) object;
+        super.setObject(object);
         for (Property property : propertyList) {
             property.getPropertyBinder().setObject(object);
         }
@@ -122,7 +118,7 @@ public class ObjectDataBinder<O extends Object> extends AbsUIBinder implements V
             property.release();
         propertyList.clear();
         propertyList = null;
-        o = null;
+        object = null;
         parentView = null;
     }
 
@@ -134,5 +130,14 @@ public class ObjectDataBinder<O extends Object> extends AbsUIBinder implements V
     @Override
     public void onViewDetachedFromWindow(View view) {
         release();
+    }
+
+    @Override
+    public ObjectDataBinder setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback) {
+        for (Property property : propertyList)
+            if (property.getPropertyName().equals(propertyKey)) {
+                property.getPropertyBinder().setDataUpdatedCallback(callback);
+            }
+        return this;
     }
 }

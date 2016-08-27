@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.utils;
+package com.noisyz.bindlibrary.utils;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -31,16 +31,11 @@ public class ReflectionUtils {
         return object;
     }
 
-    public static void invokeSetterMethod(Method method, Object object, Object value){
-        try {
+    public static void invokeSetterMethod(Method method, Object object, Object value) throws InvocationTargetException, IllegalAccessException {
             method.setAccessible(true);
             if (method.isAccessible()) {
                 method.invoke(object, value);
             }
-
-        } catch (SecurityException | IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
-            e.printStackTrace();
-        }
     }
 
     public static Object invokeGetterMethod(Method method, Object object) {
@@ -71,12 +66,8 @@ public class ReflectionUtils {
         return result;
     }
 
-    public static void setVariableValue(Field f, Object parentObject, Object value) {
-        try {
+    public static void setVariableValue(Field f, Object parentObject, Object value) throws IllegalAccessException {
             f.set(parentObject, value);
-        } catch (IllegalAccessException | SecurityException | IllegalArgumentException e) {
-            e.printStackTrace();
-        }
     }
 
 

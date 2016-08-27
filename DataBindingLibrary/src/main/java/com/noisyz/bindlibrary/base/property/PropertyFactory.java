@@ -1,22 +1,22 @@
-package com.noisyz.databindinglibrary.bind.base.property;
+package com.noisyz.bindlibrary.base.property;
 
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 
-import com.noisyz.databindinglibrary.annotations.field.CustomFieldType;
-import com.noisyz.databindinglibrary.annotations.field.ImageField;
-import com.noisyz.databindinglibrary.annotations.field.SimpleAdapterViewField;
-import com.noisyz.databindinglibrary.annotations.field.SimpleFieldType;
-import com.noisyz.databindinglibrary.annotations.methods.CustomGetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.CustomSetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.GetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.ImageGetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.SetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.SimpleAdapterViewGetter;
-import com.noisyz.databindinglibrary.annotations.methods.SimpleAdapterViewSetter;
-import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
+import com.noisyz.bindlibrary.annotations.field.CustomField;
+import com.noisyz.bindlibrary.annotations.field.ImageField;
+import com.noisyz.bindlibrary.annotations.field.AdapterViewField;
+import com.noisyz.bindlibrary.annotations.methods.CustomGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.CustomSetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.GetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.ImageGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.SetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewGetter;
+import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewSetter;
+import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 import com.noisyz.bindlibrary.wrappers.WrapperViewFactory;
 
@@ -183,9 +183,11 @@ public class PropertyFactory {
             if (!propertyKey.isEmpty()) {
                 ArrayList<View> views = getViewsByTag((ViewGroup) parentView, propertyKey);
                 for (View view : views) {
-                    PropertyViewWrapper viewWrapper = WrapperViewFactory.getImagePropertyViewWrapper(imageGetterMethod, view, object, method);
-                    if (viewWrapper != null) {
-                        properties.add(new Property(propertyKey, viewWrapper));
+                    if (view instanceof ImageView) {
+                        PropertyViewWrapper viewWrapper = WrapperViewFactory.getImagePropertyViewWrapper(imageGetterMethod, (ImageView) view, object, method);
+                        if (viewWrapper != null) {
+                            properties.add(new Property(propertyKey, viewWrapper));
+                        }
                     }
                 }
             }
@@ -198,36 +200,36 @@ public class PropertyFactory {
         for (Field field : object.getClass().getDeclaredFields()) {
             ArrayList<View> views = getViewsByTag((ViewGroup) parentView, field.getName());
             for (View view : views) {
-                AbsUIBinder viewWrapper = getFieldViewWrapper(parentBinder, field, view, object);
+                PropertyViewWrapper viewWrapper = getFieldViewWrapper(parentBinder, field, view, object);
                 if (viewWrapper != null) {
-                    fieldList.add(new Property(view.getTag().toString(), viewWrapper));
+                    fieldList.add(new Property(field.getName(), viewWrapper));
                 }
             }
         }
         return fieldList;
     }
 
-    private static AbsUIBinder getFieldViewWrapper(AbsUIBinder parentBinder, Field objectField, View fieldView, Object o) {
+    private static PropertyViewWrapper getFieldViewWrapper(AbsUIBinder parentBinder, Field objectField, View fieldView, Object o) {
         PropertyViewWrapper viewWrapper = null;
-        SimpleFieldType simpleFieldType = objectField.getAnnotation(SimpleFieldType.class);
-        if (simpleFieldType != null) {
-            viewWrapper = WrapperViewFactory.getSimplePropertyViewWrapper(simpleFieldType, fieldView, o, objectField);
+        com.noisyz.bindlibrary.annotations.field.Field field = objectField.getAnnotation(com.noisyz.bindlibrary.annotations.field.Field.class);
+        if (field != null) {
+            viewWrapper = WrapperViewFactory.getSimplePropertyViewWrapper(field, fieldView, o, objectField);
         }
 
         ImageField imageField = objectField.getAnnotation(ImageField.class);
-        if (imageField != null) {
-            viewWrapper = WrapperViewFactory.getImagePropertyViewWrapper(imageField, fieldView, o, objectField);
+        if (imageField != null && fieldView instanceof ImageView) {
+            viewWrapper = WrapperViewFactory.getImagePropertyViewWrapper(imageField, (ImageView) fieldView, o, objectField);
         }
 
-        SimpleAdapterViewField simpleAdapterViewField = objectField.getAnnotation(SimpleAdapterViewField.class);
-        if (simpleAdapterViewField != null) {
+        AdapterViewField AdapterViewField = objectField.getAnnotation(AdapterViewField.class);
+        if (AdapterViewField != null) {
             viewWrapper = WrapperViewFactory.
-                    getSimpleAdapterViewWrapper(simpleAdapterViewField, fieldView, o, objectField);
+                    getSimpleAdapterViewWrapper(AdapterViewField, fieldView, o, objectField);
         }
 
-        CustomFieldType customFieldType = objectField.getAnnotation(CustomFieldType.class);
-        if (customFieldType != null) {
-            viewWrapper = WrapperViewFactory.getSimplePropertyViewWrapper(customFieldType, fieldView, o, objectField);
+        CustomField CustomField = objectField.getAnnotation(CustomField.class);
+        if (CustomField != null) {
+            viewWrapper = WrapperViewFactory.getSimplePropertyViewWrapper(CustomField, fieldView, o, objectField);
         }
 
         if (viewWrapper != null) {
@@ -251,12 +253,20 @@ public class PropertyFactory {
                 if (object != null) {
                     String objectTagInString = object.toString();
                     final String[] tagsObj = objectTagInString.split("\\|");
+                    String newTag = "";
                     for (String tagObj : tagsObj) {
                         boolean onlyOne = !tagObj.contains("#");
                         boolean isField = onlyOne ? tagObj.equals(tag) : tagObj.contains(tag);
                         if (!TextUtils.isEmpty(tagObj) && isField) {
                             views.add(child);
+                        }else{
+                            newTag+=tagObj+"|";
                         }
+                    }
+                    if(TextUtils.isEmpty(newTag)){
+                        child.setTag(null);
+                    }else{
+                        child.setTag(newTag.substring(0, newTag.length()-1));
                     }
                 }
             }

@@ -1,9 +1,9 @@
-package com.noisyz.databindinglibrary.callback.imageproperty.impl;
+package com.noisyz.bindlibrary.callback.imageproperty.impl;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
-import com.noisyz.databindinglibrary.callback.imageproperty.abs.SyncImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.abs.SyncImageProvider;
 
 /**
  * Created by Oleg on 05.04.2016.

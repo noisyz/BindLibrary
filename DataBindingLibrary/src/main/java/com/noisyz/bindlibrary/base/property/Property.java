@@ -1,6 +1,7 @@
-package com.noisyz.databindinglibrary.bind.base.property;
+package com.noisyz.bindlibrary.base.property;
 
-import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
+import com.noisyz.bindlibrary.base.AbsUIBinder;
+import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 
 /**
  * Created by Oleg on 05.04.2016.
@@ -8,11 +9,12 @@ import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
 public class Property {
 
     private String propertyName;
-    private AbsUIBinder propertyBinder;
+    private PropertyViewWrapper propertyBinder;
 
-    public Property(String propertyName, AbsUIBinder propertyBinder){
+    public Property(String propertyName, PropertyViewWrapper propertyBinder){
         this.propertyBinder = propertyBinder;
         this.propertyName = propertyName;
+        this.propertyBinder.setPropertyName(propertyName);
     }
 
     public String getPropertyName() {

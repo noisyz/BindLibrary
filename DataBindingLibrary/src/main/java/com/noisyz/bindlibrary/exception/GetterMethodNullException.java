@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.exception;
+package com.noisyz.bindlibrary.exception;
 
 /**
  * Created by oleg on 15.08.16.

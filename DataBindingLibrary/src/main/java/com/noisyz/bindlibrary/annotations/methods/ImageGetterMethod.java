@@ -1,7 +1,8 @@
-package com.noisyz.databindinglibrary.annotations.methods;
+package com.noisyz.bindlibrary.annotations.methods;
 
 
-import com.noisyz.databindinglibrary.callback.imageproperty.ImageProvider;
+
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,7 +12,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ImageGetterMethod {
-    Class<? extends ImageProvider> imageProvider();
+    Class<? extends ImageProvider> value();
 
     String propertyKey() default "";
 

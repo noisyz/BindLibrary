@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.callback.imageproperty;
+package com.noisyz.bindlibrary.callback.imageproperty;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -10,24 +10,20 @@ import android.widget.ImageView;
  */
 public abstract class ImageProvider<T> implements BitmapLoader<T> {
 
-    private View view;
+    private ImageView view;
 
-    public void provideData(View view, T t) {
+    public void provideData(ImageView view, T t) {
         this.view = view;
         loadBitmap(t);
     }
 
-    protected View getView(){
+    protected ImageView getView(){
         return view;
     }
 
     public void showBitmap(Bitmap bitmap) {
         if (view != null) {
-            if (view instanceof ImageView) {
-                ((ImageView) view).setImageBitmap(bitmap);
-            } else {
-                view.setBackgroundDrawable(new BitmapDrawable(bitmap));
-            }
+            view.setImageBitmap(bitmap);
         }
     }
 

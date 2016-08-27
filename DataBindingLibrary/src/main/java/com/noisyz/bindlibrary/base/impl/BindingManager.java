@@ -1,18 +1,19 @@
-package com.noisyz.databindinglibrary.bind.base.impl;
+package com.noisyz.bindlibrary.base.impl;
 
 
-import com.noisyz.databindinglibrary.bind.base.AbsUIBinder;
-import com.noisyz.databindinglibrary.bind.base.UIBinder;
-import com.noisyz.databindinglibrary.callback.DataUpdatedCallback;
+import com.noisyz.bindlibrary.base.ParentBinder;
+import com.noisyz.bindlibrary.base.UIBinder;
+import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 
 import java.util.HashMap;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public class BindingManager extends AbsUIBinder {
+public class BindingManager implements UIBinder, ParentBinder {
 
     private HashMap<String, UIBinder> binders;
+    private DataUpdatedCallback dataUpdatedCallback;
 
     public static BindingManager newInstance() {
         return new BindingManager();
@@ -22,7 +23,7 @@ public class BindingManager extends AbsUIBinder {
         binders = new HashMap<>();
     }
 
-    public UIBinder getBinder(String key){
+    public UIBinder getBinder(String key) {
         return binders.get(key);
     }
 
@@ -42,7 +43,7 @@ public class BindingManager extends AbsUIBinder {
 
     @Override
     public BindingManager setDataUpdatedCallback(DataUpdatedCallback callback) {
-        super.setDataUpdatedCallback(callback);
+        this.dataUpdatedCallback = callback;
         for (String key : binders.keySet())
             if (!binders.get(key).hasDataUpdatedCallback()) {
                 binders.get(key).setDataUpdatedCallback(callback);
@@ -51,11 +52,33 @@ public class BindingManager extends AbsUIBinder {
     }
 
     @Override
+    public DataUpdatedCallback getDataUpdatedCallback() {
+        return dataUpdatedCallback;
+    }
+
+    @Override
+    public boolean hasDataUpdatedCallback() {
+        return dataUpdatedCallback != null;
+    }
+
+    @Override
+    public void setObject(Object o) {
+
+    }
+
+    @Override
     public void release() {
-        super.release();
+        dataUpdatedCallback = null;
         for (String key : binders.keySet())
             binders.get(key).release();
         binders.clear();
         binders = null;
+    }
+
+    @Override
+    public BindingManager setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback) {
+        if (binders.containsKey(propertyKey))
+            binders.get(propertyKey).setDataUpdatedCallback(callback);
+        return this;
     }
 }

@@ -1,67 +1,63 @@
-package com.noisyz.databindinglibrary.bind.base.impl.adapter;
+package com.noisyz.bindlibrary.base.impl.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.noisyz.databindinglibrary.beans.BindObject;
-import com.noisyz.databindinglibrary.beans.abs.MultiTypeObject;
-import com.noisyz.databindinglibrary.bind.base.impl.ObjectDataBinder;
-import com.noisyz.databindinglibrary.callback.clickevent.OnElementClickListener;
-import com.noisyz.databindinglibrary.callback.clickevent.OnElementClickListenerWrapper;
-import com.noisyz.databindinglibrary.callback.clickevent.OnItemClickListener;
-import com.noisyz.databindinglibrary.callback.layoutcallback.BaseLayoutResourceProvider;
-import com.noisyz.databindinglibrary.callback.layoutcallback.LayoutResourceProvider;
-import com.noisyz.databindinglibrary.exception.EmptyBindAdapterException;
+import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListener;
+import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListenerWrapper;
+import com.noisyz.bindlibrary.callback.clickevent.OnItemClickListener;
+import com.noisyz.bindlibrary.callback.layoutcallback.BaseLayoutResourceProvider;
+import com.noisyz.bindlibrary.callback.layoutcallback.EmptyBaseLayoutResourceProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Oleg on 23.03.2016.
  */
-public class BindAdapter<O extends BindObject> extends BaseAdapter {
+public class BindAdapter extends BaseAdapter {
 
     private static final int MODE_INVALID = -1;
     private static final int MODE_LIST = 0;
     private static final int MODE_ARRAY = 1;
 
-    protected O[] os;
-    protected List<O> itemList;
-    private int mode, viewTypeCount;
-    private LayoutResourceProvider mLayoutResourceProvider;
-    private OnItemClickListener<O> onItemClickListener;
+    protected Object[] os;
+    protected List itemList;
+    private int mode;
+    private BaseLayoutResourceProvider mLayoutResourceProvider;
+    private OnItemClickListener onItemClickListener;
     private List<OnElementClickListenerWrapper> elementsClickWrappers;
 
-    public BindAdapter(List<O> itemList, int layoutResID) {
-        mLayoutResourceProvider = new BaseLayoutResourceProvider(layoutResID);
+    public BindAdapter(List itemList, int layoutResID) {
+        mLayoutResourceProvider = new EmptyBaseLayoutResourceProvider(layoutResID);
         if (itemList == null) {
-            itemList = new ArrayList<O>();
+            itemList = new ArrayList();
         }
         this.itemList = itemList;
         mode = MODE_LIST;
-        viewTypeCount = 1;
     }
 
-    public BindAdapter(O[] os, int layoutResID) {
-        mLayoutResourceProvider = new BaseLayoutResourceProvider(layoutResID);
+    public BindAdapter(Object[] os, int layoutResID) {
+        mLayoutResourceProvider = new EmptyBaseLayoutResourceProvider(layoutResID);
         if (os != null) {
             this.os = os;
             mode = MODE_ARRAY;
         } else mode = MODE_INVALID;
-        viewTypeCount = 1;
     }
 
-    public BindAdapter(List<O> itemList, LayoutResourceProvider mLayoutResourceProvider) {
+    public BindAdapter(List itemList, BaseLayoutResourceProvider mLayoutResourceProvider) {
         this(mLayoutResourceProvider);
         if (itemList == null) {
-            itemList = new ArrayList<O>();
+            itemList = new ArrayList();
         }
         this.itemList = itemList;
         mode = MODE_LIST;
     }
 
-    public BindAdapter(O[] os, LayoutResourceProvider mLayoutResourceProvider) {
+    public BindAdapter(Object[] os, BaseLayoutResourceProvider mLayoutResourceProvider) {
         this(mLayoutResourceProvider);
         if (os != null) {
             this.os = os;
@@ -69,17 +65,12 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
         } else mode = MODE_INVALID;
     }
 
-    private BindAdapter(final LayoutResourceProvider mLayoutResourceProvider) {
+    private BindAdapter(final BaseLayoutResourceProvider mLayoutResourceProvider) {
         this.mLayoutResourceProvider = mLayoutResourceProvider;
         elementsClickWrappers = new ArrayList<>();
     }
 
-    public BindAdapter setItemViewCount(int itemViewCount){
-        this.viewTypeCount = itemViewCount;
-        return this;
-    }
-
-    public BindAdapter setOnElementClickListener(int elementId, OnElementClickListener<O> onClickListener) {
+    public BindAdapter setOnElementClickListener(int elementId, OnElementClickListener onClickListener) {
         elementsClickWrappers.add(new OnElementClickListenerWrapper(elementId, onClickListener));
         return this;
     }
@@ -89,7 +80,7 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
         return this;
     }
 
-    public BindAdapter<O> setOnItemClickListener(OnItemClickListener<O> onItemClickListener) {
+    public BindAdapter setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
         return this;
     }
@@ -107,7 +98,7 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
     }
 
     @Override
-    public O getItem(int position) {
+    public Object getItem(int position) {
         switch (mode) {
             case MODE_ARRAY:
                 return os[position];
@@ -119,25 +110,13 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
     }
 
     @Override
-    public int getItemViewType(int position){
-        O o = getItem(position);
-        int viewType = 0;
-        if(o instanceof MultiTypeObject){
-            viewType = ((MultiTypeObject) o).getType();
-        }
-        return viewType;
+    public int getItemViewType(int position) {
+        return mLayoutResourceProvider.getItemViewType(getItem(position));
     }
 
     @Override
-    public int getViewTypeCount(){
-        if(!isEmpty()) {
-            O o = getItem(0);
-            if (o instanceof MultiTypeObject) {
-                viewTypeCount = ((MultiTypeObject) o).getTypeCount();
-            }
-        } else if(viewTypeCount==0)
-            throw new EmptyBindAdapterException();
-        return viewTypeCount;
+    public int getViewTypeCount() {
+        return mLayoutResourceProvider.getLayoutCount();
     }
 
     @Override
@@ -153,22 +132,19 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
     @Override
     public View getView(final int position, View view, ViewGroup parent) {
         BinderHolder binderHolder = null;
-        final O o = getItem(position);
-        int currentItemLayoutID = o instanceof MultiTypeObject?
-                mLayoutResourceProvider.getLayoutResourceID(((MultiTypeObject) o).getType()):
-                mLayoutResourceProvider.getLayoutResourceID(0);
+        final Object object = getItem(position);
+        int currentItemLayoutID = mLayoutResourceProvider.getLayoutResourceID(getItemViewType(position));
 
         if (view == null) {
             view = LayoutInflater.from(parent.getContext()).inflate(currentItemLayoutID, null);
             binderHolder = new BinderHolder();
-            binderHolder.objectDataBinder = new ObjectDataBinder<>(o).registerView(view);
+            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
             view.setTag(binderHolder);
+        } else {
+            binderHolder = (BinderHolder) view.getTag();
+            binderHolder.objectDataBinder.setObject(object);
         }
-        else binderHolder = (BinderHolder) view.getTag();
-
-        ObjectDataBinder objectDataBinder = binderHolder.objectDataBinder;
-        objectDataBinder.setObject(o);
-        objectDataBinder.bindUI();
+        binderHolder.objectDataBinder.bindUI();
 
         final View finalView = view;
 
@@ -176,7 +152,7 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(finalView, position, o);
+                    onItemClickListener.onItemClick(finalView, position, object);
                 }
             });
         }
@@ -189,7 +165,7 @@ public class BindAdapter<O extends BindObject> extends BaseAdapter {
                         element.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                wrapper.getOnClickListener().onElementClick(finalView, elementId, position, o);
+                                wrapper.getOnClickListener().onElementClick(finalView, elementId, position, object);
                             }
                         });
                     }

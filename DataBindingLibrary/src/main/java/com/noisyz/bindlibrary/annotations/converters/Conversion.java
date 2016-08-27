@@ -1,6 +1,6 @@
-package com.noisyz.databindinglibrary.annotations.converters;
+package com.noisyz.bindlibrary.annotations.converters;
 
-import com.noisyz.databindinglibrary.conversion.TwoWayConverter;
+import com.noisyz.bindlibrary.conversion.TwoWayConverter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

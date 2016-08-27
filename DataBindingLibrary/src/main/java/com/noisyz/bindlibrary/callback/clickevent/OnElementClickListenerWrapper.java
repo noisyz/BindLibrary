@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.callback.clickevent;
+package com.noisyz.bindlibrary.callback.clickevent;
 
 /**
  * Created by oleg on 13.08.16.

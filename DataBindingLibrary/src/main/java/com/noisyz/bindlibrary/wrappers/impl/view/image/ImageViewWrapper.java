@@ -1,32 +1,20 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view.image;
+package com.noisyz.bindlibrary.wrappers.impl.view.image;
 
-import android.view.View;
+import android.widget.ImageView;
 
-import com.noisyz.databindinglibrary.callback.imageproperty.ImageProvider;
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public class ImageViewWrapper extends AbsViewWrapper<View> {
+public class ImageViewWrapper extends AbsViewWrapper<ImageView> {
 
     private ImageProvider provider;
 
-    public ImageViewWrapper(final ImageProvider provider, View imageView) {
+    public ImageViewWrapper(final ImageProvider provider, ImageView imageView) {
         super(imageView);
         this.provider = provider;
-        imageView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View view) {
-
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View view) {
-                ImageViewWrapper.this.provider.release();
-                ImageViewWrapper.this.provider = null;
-            }
-        });
     }
 
     @Override

@@ -1,9 +1,9 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view.adapterviewwrapper;
+package com.noisyz.bindlibrary.wrappers.impl.view.adapterviewwrapper;
 
 import android.view.View;
 import android.widget.AdapterView;
 
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 /**
  * Created by Oleg on 18.03.2016.

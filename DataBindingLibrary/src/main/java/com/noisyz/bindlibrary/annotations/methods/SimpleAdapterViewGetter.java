@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.annotations.methods;
+package com.noisyz.bindlibrary.annotations.methods;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

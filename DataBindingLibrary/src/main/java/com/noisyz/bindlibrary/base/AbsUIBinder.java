@@ -1,13 +1,18 @@
-package com.noisyz.databindinglibrary.bind.base;
+package com.noisyz.bindlibrary.base;
 
-import com.noisyz.databindinglibrary.callback.DataUpdatedCallback;
+import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 
 /**
  * Created by Oleg on 24.03.2016.
  */
-public abstract class AbsUIBinder<O extends Object, V extends Object> implements UIBinder<O> {
+public abstract class AbsUIBinder implements UIBinder {
 
+    protected Object object;
     private DataUpdatedCallback dataUpdatedCallback;
+
+    public AbsUIBinder(Object object){
+        this.object = object;
+    }
 
     public AbsUIBinder setDataUpdatedCallback(DataUpdatedCallback callback) {
         this.dataUpdatedCallback = callback;
@@ -19,7 +24,7 @@ public abstract class AbsUIBinder<O extends Object, V extends Object> implements
         dataUpdatedCallback = null;
     }
 
-    protected void onObjectUpdated(O object, String propertyName, V value) {
+    protected void onObjectUpdated(Object object, String propertyName, Object value) {
         if (dataUpdatedCallback != null) {
             dataUpdatedCallback.onDataUpdated(this, object, propertyName, value);
         }
@@ -30,8 +35,8 @@ public abstract class AbsUIBinder<O extends Object, V extends Object> implements
     }
 
     @Override
-    public void setObject(O o) {
-
+    public void setObject(Object object) {
+        this.object = object;
     }
 
     public DataUpdatedCallback getDataUpdatedCallback() {

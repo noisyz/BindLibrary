@@ -1,20 +1,11 @@
-package com.noisyz.databindinglibrary.callback.layoutcallback;
+package com.noisyz.bindlibrary.callback.layoutcallback;
 
-import com.noisyz.databindinglibrary.beans.abs.MultiTypeObject;
 
 /**
  * Created by oleg on 13.08.16.
  */
-public class BaseLayoutResourceProvider<O extends MultiTypeObject> implements LayoutResourceProvider<O> {
+public interface BaseLayoutResourceProvider<T> extends LayoutResourceProvider<T> {
 
-    private int mLayoutResID;
+    int getLayoutCount();
 
-    public BaseLayoutResourceProvider(int mLayoutResID) {
-        this.mLayoutResID = mLayoutResID;
-    }
-
-    @Override
-    public int getLayoutResourceID(int type) {
-        return mLayoutResID;
-    }
 }

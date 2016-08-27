@@ -1,13 +1,13 @@
-package com.noisyz.databindinglibrary.callback.imageproperty.abs;
+package com.noisyz.bindlibrary.callback.imageproperty.abs;
 
 import android.graphics.Bitmap;
 
-import com.noisyz.databindinglibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public abstract class SyncImageProvider<T extends Object> extends ImageProvider<T> {
+public abstract class SyncImageProvider<T> extends ImageProvider<T> {
 
     public void loadBitmap(T t) {
         showBitmap(getLoadedBitmap(t));

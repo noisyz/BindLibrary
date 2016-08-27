@@ -1,11 +1,11 @@
-package com.noisyz.databindinglibrary.bind.base;
+package com.noisyz.bindlibrary.base;
 
-import com.noisyz.databindinglibrary.callback.DataUpdatedCallback;
+import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public interface UIBinder<O extends Object> {
+public interface UIBinder {
 
     void bindUI();
 
@@ -15,7 +15,8 @@ public interface UIBinder<O extends Object> {
 
     boolean hasDataUpdatedCallback();
 
-    void setObject(O o);
+    void setObject(Object object);
 
     void release();
+
 }

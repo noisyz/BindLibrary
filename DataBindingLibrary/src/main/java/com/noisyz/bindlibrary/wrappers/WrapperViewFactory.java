@@ -4,46 +4,46 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.noisyz.databindinglibrary.annotations.converters.Conversion;
-import com.noisyz.databindinglibrary.annotations.converters.ConvertToObject;
-import com.noisyz.databindinglibrary.annotations.converters.ConvertToUI;
-import com.noisyz.databindinglibrary.annotations.field.CustomFieldType;
-import com.noisyz.databindinglibrary.annotations.field.ImageField;
-import com.noisyz.databindinglibrary.annotations.field.SimpleAdapterViewField;
-import com.noisyz.databindinglibrary.annotations.field.SimpleFieldType;
-import com.noisyz.databindinglibrary.annotations.methods.CustomGetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.CustomSetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.GetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.ImageGetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.SetterMethod;
-import com.noisyz.databindinglibrary.annotations.methods.SimpleAdapterViewGetter;
-import com.noisyz.databindinglibrary.annotations.methods.SimpleAdapterViewSetter;
-import com.noisyz.databindinglibrary.annotations.propertyType;
-import com.noisyz.databindinglibrary.conversion.Converter;
-import com.noisyz.databindinglibrary.conversion.EmptyConverter;
-import com.noisyz.databindinglibrary.conversion.TwoWayConverter;
-import com.noisyz.databindinglibrary.exception.GetterMethodNullException;
-import com.noisyz.databindinglibrary.utils.ReflectionUtils;
-import com.noisyz.databindinglibrary.wrappers.impl.fields.FieldPropertyViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.methods.GetterPropertyViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.methods.MethodPropertyViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.adapterviewwrapper.SimpleAdapterViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.image.ImageViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.ChangebleRatingBarWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.CompoundButtonWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.EnabledWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.FloatTextWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.ProgressViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.RatingBarWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.SeekBarWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.TextViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.simple.VisibilityWrapper;
+import com.noisyz.bindlibrary.annotations.converters.Conversion;
+import com.noisyz.bindlibrary.annotations.converters.ConvertToObject;
+import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
+import com.noisyz.bindlibrary.annotations.field.CustomField;
+import com.noisyz.bindlibrary.annotations.field.ImageField;
+import com.noisyz.bindlibrary.annotations.field.AdapterViewField;
+import com.noisyz.bindlibrary.annotations.methods.CustomGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.CustomSetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.GetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.ImageGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.SetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewGetter;
+import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewSetter;
+import com.noisyz.bindlibrary.annotations.propertyType;
+import com.noisyz.bindlibrary.conversion.Converter;
+import com.noisyz.bindlibrary.conversion.EmptyConverter;
+import com.noisyz.bindlibrary.conversion.TwoWayConverter;
+import com.noisyz.bindlibrary.exception.GetterMethodNullException;
+import com.noisyz.bindlibrary.utils.ReflectionUtils;
+import com.noisyz.bindlibrary.wrappers.impl.fields.FieldPropertyViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.methods.GetterPropertyViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.methods.MethodPropertyViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.adapterviewwrapper.SimpleAdapterViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.image.ImageViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.ChangebleRatingBarWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.CompoundButtonWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.EnabledWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.FloatTextWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.ProgressViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.RatingBarWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.SeekBarWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.TextViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.simple.VisibilityWrapper;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -53,7 +53,7 @@ import java.lang.reflect.Method;
  */
 public class WrapperViewFactory {
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(SimpleFieldType fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(com.noisyz.bindlibrary.annotations.field.Field fieldType, View view, Object object, Field field) {
         PropertyViewWrapper propertyViewWrapper =
                 new FieldPropertyViewWrapper(getViewWrapper(fieldType.value(), view), object, field);
         try {
@@ -66,9 +66,9 @@ public class WrapperViewFactory {
         return propertyViewWrapper;
     }
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(CustomFieldType fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(CustomField fieldType, View view, Object object, Field field) {
         PropertyViewWrapper propertyViewWrapper = new FieldPropertyViewWrapper(
-                getCustomViewWrapper(fieldType.customViewWrapper(), view), object, field);
+                getCustomViewWrapper(fieldType.value(), view), object, field);
         try {
             setConversion(fieldType.twoWayConverter(), fieldType.convertToObject(), fieldType.convertToUI(), propertyViewWrapper);
         } catch (InstantiationException e) {
@@ -102,7 +102,7 @@ public class WrapperViewFactory {
         if(getterMethod == null)
             throw new GetterMethodNullException();
         PropertyViewWrapper propertyViewWrapper =
-                new MethodPropertyViewWrapper(getCustomViewWrapper(getterMethod.customViewWrapper(), view), object, getter, setter);
+                new MethodPropertyViewWrapper(getCustomViewWrapper(getterMethod.value(), view), object, getter, setter);
         try {
             setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
         } catch (InstantiationException e) {
@@ -173,9 +173,9 @@ public class WrapperViewFactory {
 
     }
 
-    public static PropertyViewWrapper getImagePropertyViewWrapper(ImageField fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getImagePropertyViewWrapper(ImageField fieldType, ImageView view, Object object, Field field) {
         try {
-            AbsViewWrapper viewWrapper = new ImageViewWrapper(fieldType.imageProvider().newInstance(), view);
+            AbsViewWrapper viewWrapper = new ImageViewWrapper(fieldType.value().newInstance(), view);
             PropertyViewWrapper propertyViewWrapper = new FieldPropertyViewWrapper(viewWrapper, object, field);
             return propertyViewWrapper;
         } catch (InstantiationException e) {
@@ -186,9 +186,9 @@ public class WrapperViewFactory {
         return null;
     }
 
-    public static PropertyViewWrapper getImagePropertyViewWrapper(ImageGetterMethod fieldType, View view, Object object, Method method) {
+    public static PropertyViewWrapper getImagePropertyViewWrapper(ImageGetterMethod fieldType, ImageView view, Object object, Method method) {
         try {
-            AbsViewWrapper viewWrapper = new ImageViewWrapper(fieldType.imageProvider().newInstance(), view);
+            AbsViewWrapper viewWrapper = new ImageViewWrapper(fieldType.value().newInstance(), view);
             PropertyViewWrapper propertyViewWrapper = new GetterPropertyViewWrapper(viewWrapper, object, method);
             return propertyViewWrapper;
         } catch (InstantiationException e) {
@@ -199,10 +199,10 @@ public class WrapperViewFactory {
         return null;
     }
 
-    public static PropertyViewWrapper getSimpleAdapterViewWrapper(SimpleAdapterViewField fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getSimpleAdapterViewWrapper(AdapterViewField fieldType, View view, Object object, Field field) {
         int indent = fieldType.indent();
         String[] values = view.getContext().getResources().getStringArray(fieldType.resourceArray());
-        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(view.getContext(), fieldType.layoutResID(), values);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(view.getContext(), fieldType.layoutResID(), values);
         ((AdapterView) view).setAdapter(spinnerArrayAdapter);
         SimpleAdapterViewWrapper wrapper = new SimpleAdapterViewWrapper((AdapterView) view, indent);
         PropertyViewWrapper fieldPropertyViewWrapper = new FieldPropertyViewWrapper(wrapper, object, field);
@@ -233,7 +233,7 @@ public class WrapperViewFactory {
         String[] values = view.getContext().getResources().getStringArray(resourceArray);
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(view.getContext(), layoutResID, values);
         view.setAdapter(spinnerArrayAdapter);
-        SimpleAdapterViewWrapper wrapper = new SimpleAdapterViewWrapper((AdapterView) view, indent);
+        SimpleAdapterViewWrapper wrapper = new SimpleAdapterViewWrapper(view, indent);
         PropertyViewWrapper fieldPropertyViewWrapper = new MethodPropertyViewWrapper(wrapper, object, getter, setter);
         return fieldPropertyViewWrapper;
     }

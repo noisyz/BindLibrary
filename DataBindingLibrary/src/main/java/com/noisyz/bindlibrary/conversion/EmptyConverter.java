@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.conversion;
+package com.noisyz.bindlibrary.conversion;
 
 /**
  * Created by Oleg on 18.03.2016.

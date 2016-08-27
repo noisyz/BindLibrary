@@ -1,8 +1,8 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view.simple;
+package com.noisyz.bindlibrary.wrappers.impl.view.simple;
 
 import android.widget.CompoundButton;
 
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 /**
  * Created by Oleg on 17.03.2016.

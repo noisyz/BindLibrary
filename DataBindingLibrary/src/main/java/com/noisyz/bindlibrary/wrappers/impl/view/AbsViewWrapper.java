@@ -1,9 +1,9 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view;
+package com.noisyz.bindlibrary.wrappers.impl.view;
 
 import android.view.View;
 
 /**
- * Created by Oleg on 05.04.2016.
+ * Created by oleg on 26.08.16.
  */
 public abstract class AbsViewWrapper<V extends View> {
 
@@ -39,3 +39,4 @@ public abstract class AbsViewWrapper<V extends View> {
         void onViewValueChanged(Object value);
     }
 }
+

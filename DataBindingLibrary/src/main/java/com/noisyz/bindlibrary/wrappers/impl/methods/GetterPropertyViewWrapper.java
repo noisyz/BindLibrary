@@ -1,15 +1,15 @@
-package com.noisyz.databindinglibrary.wrappers.impl.methods;
+package com.noisyz.bindlibrary.wrappers.impl.methods;
 
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 import java.lang.reflect.Method;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class GetterPropertyViewWrapper<V extends AbsViewWrapper> extends MethodPropertyViewWrapper<V> {
+public class GetterPropertyViewWrapper<VW extends AbsViewWrapper> extends MethodPropertyViewWrapper<VW> {
 
-    public GetterPropertyViewWrapper(V v, Object object, Method method) {
-        super(v, object, method, GETTER);
+    public GetterPropertyViewWrapper(VW vw, Object object, Method method) {
+        super(vw, object, method, GETTER);
     }
 }

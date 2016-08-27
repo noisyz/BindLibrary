@@ -1,4 +1,4 @@
-package com.noisyz.databindinglibrary.wrappers.impl.view.simple;
+package com.noisyz.bindlibrary.wrappers.impl.view.simple;
 
 import android.widget.SeekBar;
 

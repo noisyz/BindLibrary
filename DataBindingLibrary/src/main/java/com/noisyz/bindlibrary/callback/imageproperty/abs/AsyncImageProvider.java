@@ -1,11 +1,11 @@
-package com.noisyz.databindinglibrary.callback.imageproperty.abs;
+package com.noisyz.bindlibrary.callback.imageproperty.abs;
 
-import com.noisyz.databindinglibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public abstract class AsyncImageProvider<T extends Object> extends ImageProvider<T> {
+public abstract class AsyncImageProvider<T> extends ImageProvider<T> {
 
     public abstract void loadBitmap(T t);
 

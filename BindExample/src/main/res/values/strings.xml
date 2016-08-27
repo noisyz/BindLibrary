@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">NoisyBindExample</string>
+    <string name="app_name">AndroidDatabinding</string>
+
+    <string name="action_modify">Modify In Background</string>
+    <string name="save">Save</string>
+    <string name="key_title">title</string>
+    <string name="key_genre">genre</string>
+    <string name="key_date">publicationDate</string>
+    <string name="key_image">imageUrl</string>
 </resources>

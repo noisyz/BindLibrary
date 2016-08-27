@@ -1,20 +1,20 @@
-package com.noisyz.databindinglibrary.wrappers.impl.fields;
+package com.noisyz.bindlibrary.wrappers.impl.fields;
 
-import com.noisyz.databindinglibrary.utils.ReflectionUtils;
+import com.noisyz.bindlibrary.utils.ReflectionUtils;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
-import com.noisyz.databindinglibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
 
 import java.lang.reflect.Field;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class FieldPropertyViewWrapper<V extends AbsViewWrapper> extends PropertyViewWrapper<V> {
+public class FieldPropertyViewWrapper<VW extends AbsViewWrapper> extends PropertyViewWrapper<VW> {
 
     private Field field;
 
-    public FieldPropertyViewWrapper(V v, Object object, Field field) {
-        super(v, object);
+    public FieldPropertyViewWrapper(VW vw, Object object, Field field) {
+        super(vw, object);
         this.field = field;
     }
 
@@ -25,8 +25,12 @@ public class FieldPropertyViewWrapper<V extends AbsViewWrapper> extends Property
 
     @Override
     protected void updateObjectByValue(Object value) {
-        ReflectionUtils.setVariableValue(field, getObject(), value);
-        onObjectUpdated(getObject(), field.getName(), value);
+        try {
+            ReflectionUtils.setVariableValue(field, getObject(), value);
+            onObjectUpdated(getObject(), field.getName(), value);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
 

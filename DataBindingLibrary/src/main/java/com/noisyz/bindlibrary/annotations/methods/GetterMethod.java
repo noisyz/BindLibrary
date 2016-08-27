@@ -1,8 +1,8 @@
-package com.noisyz.databindinglibrary.annotations.methods;
+package com.noisyz.bindlibrary.annotations.methods;
 
-import com.noisyz.databindinglibrary.annotations.converters.ConvertToUI;
-import com.noisyz.databindinglibrary.annotations.propertyType;
-import com.noisyz.databindinglibrary.conversion.EmptyConverter;
+import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
+import com.noisyz.bindlibrary.annotations.propertyType;
+import com.noisyz.bindlibrary.conversion.EmptyConverter;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
