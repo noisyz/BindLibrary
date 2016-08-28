@@ -2,6 +2,20 @@
 
 Introduction of using data binding.
 
+Gradle:
+
+```gradle
+compile 'com.noisyz.bindlibrary:DataBindingLibrary:0.2.0'
+```
+Maven:
+```maven
+<dependency> 
+    <groupId>com.noisyz.bindlibrary</groupId> 
+    <artifactId>DataBindingLibrary</artifactId> 
+    <version>0.2.0</version> 
+    <type>pom</type> 
+</dependency>
+```
 # 1. Prepare layouts. 
 
 In your views set a tag with a your property key.
