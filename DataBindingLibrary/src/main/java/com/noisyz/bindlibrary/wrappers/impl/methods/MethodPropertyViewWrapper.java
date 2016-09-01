@@ -1,8 +1,10 @@
 package com.noisyz.bindlibrary.wrappers.impl.methods;
 
+import android.view.View;
+
 import com.noisyz.bindlibrary.utils.ReflectionUtils;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -10,20 +12,20 @@ import java.lang.reflect.Method;
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class MethodPropertyViewWrapper<VW extends AbsViewWrapper> extends PropertyViewWrapper<VW> {
+public class MethodPropertyViewWrapper extends PropertyViewWrapper{
 
     public static final int GETTER = 0;
     public static final int SETTER = 1;
     private Method setter, getter;
 
-    public MethodPropertyViewWrapper(VW vw, Object object, Method getter, Method setter) {
-        super(vw, object);
+    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method getter, Method setter) {
+        super(iViewBinder, view, object);
         this.getter = getter;
         this.setter = setter;
     }
 
-    public MethodPropertyViewWrapper(VW vw, Object object, Method method, int mode) {
-        super(vw, object);
+    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method method, int mode) {
+        super(iViewBinder, view, object);
         switch (mode) {
             case GETTER:
                 getter = method;

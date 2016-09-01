@@ -7,15 +7,12 @@ import android.view.ViewGroup;
 
 import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.base.ParentBinder;
-import com.noisyz.bindlibrary.base.UIBinder;
 import com.noisyz.bindlibrary.base.property.Property;
 import com.noisyz.bindlibrary.base.property.PropertyFactory;
 import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 import com.noisyz.bindlibrary.conversion.Converter;
-import com.noisyz.bindlibrary.wrappers.ObjectBinder;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,8 +41,11 @@ public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.
 
     public ObjectDataBinder registerView(View parentView) {
         this.parentView = parentView;
-        propertyList = PropertyFactory.getPropertyList(this, object, parentView);
-        propertyList.removeAll(Collections.singleton(null));
+        Object object = getObject();
+        if (object != null) {
+            propertyList = PropertyFactory.getPropertyList(this, object, parentView);
+            propertyList.removeAll(Collections.singleton(null));
+        }
         return this;
     }
 
@@ -84,7 +84,7 @@ public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.
     private PropertyViewWrapper getPropertyViewWrapper(String key) {
         for (Property property : propertyList) {
             if (property.getPropertyName().equals(key))
-                return (PropertyViewWrapper) property.getPropertyBinder();
+                return property.getPropertyBinder();
         }
         return null;
     }
@@ -92,22 +92,33 @@ public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.
     @Override
     public ObjectDataBinder setDataUpdatedCallback(DataUpdatedCallback callback) {
         super.setDataUpdatedCallback(callback);
-        for (Property property : propertyList)
-            property.getPropertyBinder().setDataUpdatedCallback(callback);
+        for (Property property : propertyList) {
+            PropertyViewWrapper propertyViewWrapper = property.getPropertyBinder();
+            if (propertyViewWrapper != null) {
+                propertyViewWrapper.setDataUpdatedCallback(callback);
+            }
+        }
         return this;
     }
 
     @Override
     public void bindUI() {
-        for (Property property : propertyList)
-            property.getPropertyBinder().bindUI();
+        for (Property property : propertyList) {
+            PropertyViewWrapper propertyViewWrapper = property.getPropertyBinder();
+            if (propertyViewWrapper != null) {
+                propertyViewWrapper.bindUI();
+            }
+        }
     }
 
     @Override
     public void setObject(Object object) {
         super.setObject(object);
         for (Property property : propertyList) {
-            property.getPropertyBinder().setObject(object);
+            PropertyViewWrapper propertyViewWrapper = property.getPropertyBinder();
+            if (propertyViewWrapper != null) {
+                propertyViewWrapper.setObject(object);
+            }
         }
     }
 
@@ -118,7 +129,6 @@ public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.
             property.release();
         propertyList.clear();
         propertyList = null;
-        object = null;
         parentView = null;
     }
 
@@ -135,8 +145,10 @@ public class ObjectDataBinder extends AbsUIBinder implements ParentBinder, View.
     @Override
     public ObjectDataBinder setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback) {
         for (Property property : propertyList)
-            if (property.getPropertyName().equals(propertyKey)) {
-                property.getPropertyBinder().setDataUpdatedCallback(callback);
+            if (propertyKey.equals(property.getPropertyName())) {
+                PropertyViewWrapper propertyViewWrapper = property.getPropertyBinder();
+                if (propertyViewWrapper != null)
+                    propertyViewWrapper.setDataUpdatedCallback(callback);
             }
         return this;
     }

@@ -6,6 +6,7 @@ import com.noisyz.bindlibrary.annotations.field.Field;
 import com.noisyz.bindlibrary.annotations.field.ImageField;
 import com.noisyz.bindlibrary.annotations.propertyType;
 import com.noisyz.bindlibrary.callback.imageproperty.impl.GlideImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.impl.PicassoImageProvider;
 
 import java.util.Date;
 

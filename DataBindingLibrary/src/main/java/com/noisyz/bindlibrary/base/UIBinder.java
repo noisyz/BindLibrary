@@ -17,6 +17,8 @@ public interface UIBinder {
 
     void setObject(Object object);
 
+    Object getObject();
+
     void release();
 
 }

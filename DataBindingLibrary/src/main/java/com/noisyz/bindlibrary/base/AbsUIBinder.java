@@ -2,15 +2,16 @@ package com.noisyz.bindlibrary.base;
 
 import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 
+
 /**
  * Created by Oleg on 24.03.2016.
  */
 public abstract class AbsUIBinder implements UIBinder {
 
-    protected Object object;
+    private Object object;
     private DataUpdatedCallback dataUpdatedCallback;
 
-    public AbsUIBinder(Object object){
+    public AbsUIBinder(Object object) {
         this.object = object;
     }
 
@@ -21,7 +22,6 @@ public abstract class AbsUIBinder implements UIBinder {
 
     @Override
     public void release() {
-        dataUpdatedCallback = null;
     }
 
     protected void onObjectUpdated(Object object, String propertyName, Object value) {
@@ -37,6 +37,11 @@ public abstract class AbsUIBinder implements UIBinder {
     @Override
     public void setObject(Object object) {
         this.object = object;
+    }
+
+    @Override
+    public Object getObject() {
+        return object;
     }
 
     public DataUpdatedCallback getDataUpdatedCallback() {

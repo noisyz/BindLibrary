@@ -7,4 +7,6 @@ import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
  */
 public interface ParentBinder {
     UIBinder setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback);
+
+    UIBinder getParentBinder();
 }

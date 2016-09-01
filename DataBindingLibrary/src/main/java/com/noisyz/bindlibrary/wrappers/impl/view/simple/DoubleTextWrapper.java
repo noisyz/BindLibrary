@@ -10,7 +10,7 @@ import com.noisyz.bindlibrary.wrappers.impl.ViewBinder;
 /**
  * Created by Oleg on 18.03.2016.
  */
-public class FloatTextWrapper extends ViewBinder<Float, TextView> implements TextWatcher{
+public class DoubleTextWrapper extends ViewBinder<Double, TextView> implements TextWatcher{
 
     @Override
     public void addListeners(TextView textView) {
@@ -24,13 +24,13 @@ public class FloatTextWrapper extends ViewBinder<Float, TextView> implements Tex
     }
 
     @Override
-    public Float getViewValue(TextView textView) {
-        return Float.parseFloat(textView.getText().toString().trim().replace(",", "."));
+    public Double getViewValue(TextView textView) {
+        return Double.parseDouble(textView.getText().toString().trim().replace(",", "."));
     }
 
     @Override
-    public void bindUI(Float aFloat, TextView textView) {
-        textView.setText(String.valueOf(aFloat));
+    public void bindUI(Double aDouble, TextView textView) {
+        textView.setText(String.valueOf(aDouble));
     }
 
     @Override

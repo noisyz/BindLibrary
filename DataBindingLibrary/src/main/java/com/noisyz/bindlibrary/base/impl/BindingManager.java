@@ -67,6 +67,11 @@ public class BindingManager implements UIBinder, ParentBinder {
     }
 
     @Override
+    public Object getObject() {
+        return null;
+    }
+
+    @Override
     public void release() {
         dataUpdatedCallback = null;
         for (String key : binders.keySet())

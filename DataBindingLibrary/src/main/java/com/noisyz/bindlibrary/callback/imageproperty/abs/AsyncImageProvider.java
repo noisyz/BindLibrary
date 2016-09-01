@@ -7,6 +7,4 @@ import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
  */
 public abstract class AsyncImageProvider<T> extends ImageProvider<T> {
 
-    public abstract void loadBitmap(T t);
-
 }

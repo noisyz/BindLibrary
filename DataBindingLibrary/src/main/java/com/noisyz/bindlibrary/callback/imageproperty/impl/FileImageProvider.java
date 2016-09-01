@@ -1,17 +1,16 @@
 package com.noisyz.bindlibrary.callback.imageproperty.impl;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import com.bumptech.glide.Glide;
+import com.noisyz.bindlibrary.callback.imageproperty.abs.AsyncImageProvider;
 
-import com.noisyz.bindlibrary.callback.imageproperty.abs.SyncImageProvider;
+import java.io.File;
 
 /**
- * Created by Oleg on 05.04.2016.
+ * Created by oleg on 29.08.16.
  */
-public class FileImageProvider extends SyncImageProvider<String> {
-
+public class FileImageProvider extends AsyncImageProvider<String> {
     @Override
-    public Bitmap getLoadedBitmap(String s) {
-        return BitmapFactory.decodeFile(s);
+    public void loadBitmap(String s) {
+        Glide.with(getView().getContext()).load(new File(s)).dontAnimate().into(getView());
     }
 }

@@ -5,55 +5,46 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.ViewBinder;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class TextViewWrapper extends AbsViewWrapper<TextView> {
+public class TextViewWrapper extends ViewBinder<String, TextView> implements TextWatcher{
 
-    private SimpleTextWatcher textWatcher = new SimpleTextWatcher() {
-        @Override
-        void onTextChanged(CharSequence text) {
-            bindObject(text.toString().trim());
-        }
-    };
-
-    public TextViewWrapper(TextView textView) {
-        super(textView);
-        textView.addTextChangedListener(textWatcher);
+    @Override
+    public void addListeners(TextView textView) {
+        textView.addTextChangedListener(this);
     }
 
     @Override
-    public void bindUI(Object object) {
-        getView().removeTextChangedListener(textWatcher);
-        if (object instanceof Integer) {
-            getView().setText(Integer.valueOf(object.toString()));
-        } else if (object instanceof String) {
-            String value = String.valueOf(object);
-            if (!TextUtils.isEmpty(value) && !value.equals("null"))
-                getView().setText(value);
-            getView().setText(object.toString());
-        }
-        getView().addTextChangedListener(textWatcher);
+    public void removeListeners(TextView textView) {
+        textView.removeTextChangedListener(this);
     }
 
-    public abstract class SimpleTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+    @Override
+    public String getViewValue(TextView textView) {
+        return textView.getText().toString().trim();
+    }
 
-        }
+    @Override
+    public void bindUI(String value, TextView textView) {
+        if (!TextUtils.isEmpty(value) && !value.equals("null"))
+            textView.setText(value);
+    }
 
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        }
+    }
 
-        @Override
-        public void afterTextChanged(Editable s) {
-            onTextChanged(getView().getText());
-        }
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-        abstract void onTextChanged(CharSequence text);
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+        bindObject();
     }
 }

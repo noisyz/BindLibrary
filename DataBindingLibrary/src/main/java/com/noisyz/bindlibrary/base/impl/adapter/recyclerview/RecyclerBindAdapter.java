@@ -99,17 +99,17 @@ public class RecyclerBindAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int index) {
+        final int position = index;
         Object object = getItem(position);
         BindViewHolder bindViewHolder = (BindViewHolder) holder;
         bindViewHolder.bindView(object);
 
-        final View finalView = bindViewHolder.itemView;
         if (onItemClickListener != null) {
-            finalView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onItemClickListener.onItemClick(finalView, position, getItem(position));
+                    onItemClickListener.onItemClick(holder.itemView, position, getItem(position));
                 }
             });
         }
@@ -117,12 +117,12 @@ public class RecyclerBindAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         if (elementsClickWrappers != null && !elementsClickWrappers.isEmpty()) {
             for (final OnElementClickListenerWrapper wrapper : elementsClickWrappers)
                 for (final int elementId : wrapper.getIds()) {
-                    View element = finalView.findViewById(elementId);
+                    View element = holder.itemView.findViewById(elementId);
                     if (element != null) {
                         element.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                wrapper.getOnClickListener().onElementClick(finalView, elementId, position, getItem(position));
+                                wrapper.getOnClickListener().onElementClick(holder.itemView, elementId, position, getItem(position));
                             }
                         });
                     }

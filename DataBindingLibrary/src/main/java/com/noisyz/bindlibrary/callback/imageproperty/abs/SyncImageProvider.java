@@ -9,6 +9,7 @@ import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
  */
 public abstract class SyncImageProvider<T> extends ImageProvider<T> {
 
+    @Override
     public void loadBitmap(T t) {
         showBitmap(getLoadedBitmap(t));
     }

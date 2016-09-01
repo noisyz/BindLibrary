@@ -14,7 +14,7 @@ public class MovieStore {
 
     static {
         ALL_MOVIES = new ArrayList<>();
-//        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10000; i++) {
             ALL_MOVIES
                     .add(new Movie().setTitle("Marvel's The Avengers 2: Age of Ultron").setGenre("Action")
                             .setPublicationDate(new Date(1430438400000L)).setImageUrl(
@@ -31,6 +31,6 @@ public class MovieStore {
             ALL_MOVIES.add(new Movie().setTitle("Shaun the Sheep Movie").setGenre("Family")
                     .setPublicationDate(new Date(1423180800000L))
                     .setImageUrl("https://image.tmdb.org/t/p/original/ibfQa5xTUKHfKbVQIIgu9mDjgkS.jpg"));
-//        }
+        }
     }
 }

@@ -1,24 +1,35 @@
 package com.noisyz.bindlibrary.wrappers;
 
+import android.view.View;
+
 import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.conversion.Converter;
 import com.noisyz.bindlibrary.conversion.EmptyConverter;
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.ViewBinder;
+import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
+
+import java.lang.ref.WeakReference;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public abstract class PropertyViewWrapper<VW extends AbsViewWrapper> extends AbsUIBinder implements ObjectBinder, AbsViewWrapper.OnViewValueChangedListener {
+public abstract class PropertyViewWrapper<VB extends IViewBinder> extends AbsUIBinder implements ViewBinder.OnViewValueChangedListener {
 
     private Converter updateUIConverter = new EmptyConverter(), updateObjectValueConverter = new EmptyConverter();
 
-    private VW vw;
+    private VB vb;
     private String propertyName;
+    private WeakReference<View> view;
 
-    public PropertyViewWrapper(VW vw, Object object) {
+    public PropertyViewWrapper(VB vb, View view, Object object) {
         super(object);
-        this.vw = vw;
-        this.vw.setOnViewValueChangedListener(this);
+        this.vb = vb;
+        this.view = new WeakReference<>(view);
+        if (vb instanceof ViewBinder) {
+            ViewBinder viewBinder = (ViewBinder) vb;
+            viewBinder.addListeners(view);
+            viewBinder.setOnViewValueChangedListener(this);
+        }
     }
 
     public void setPropertyName(String propertyName) {
@@ -31,9 +42,35 @@ public abstract class PropertyViewWrapper<VW extends AbsViewWrapper> extends Abs
 
     @Override
     public void bindUI() {
+
         Object value = getUIBindValue();
-        if (vw != null && value != null) {
-            vw.bindUI(value);
+        View view = this.view.get();
+
+        if (view != null && value != null) {
+            if (vb instanceof ViewBinder) {
+                ((ViewBinder) vb).removeListeners(view);
+                vb.bindUI(value, view);
+                ((ViewBinder) vb).addListeners(view);
+            } else
+                vb.bindUI(value, view);
+        }
+    }
+
+    @Override
+    public void onViewValueChanged() {
+        if (vb instanceof ViewBinder) {
+            ViewBinder viewBinder = (ViewBinder) vb;
+            View view = this.view.get();
+            if (view != null)
+                bindObject(viewBinder.getViewValue(view));
+        }
+    }
+
+    public void bindObject(Object value) {
+        if (value != null) {
+            Object convertedValue = getUpdateObjectValueConverter().
+                    getConvertedValue(value);
+            updateObjectByValue(convertedValue);
         }
     }
 
@@ -47,13 +84,6 @@ public abstract class PropertyViewWrapper<VW extends AbsViewWrapper> extends Abs
 
     protected abstract void updateObjectByValue(Object value);
 
-    @Override
-    public void bindObject(Object value) {
-        Object convertedValue = getUpdateObjectValueConverter().
-                getConvertedValue(value);
-        if (convertedValue != null)
-            updateObjectByValue(convertedValue);
-    }
 
     public void setUpdateUIConverter(Converter converter) {
         this.updateUIConverter = converter;
@@ -71,25 +101,17 @@ public abstract class PropertyViewWrapper<VW extends AbsViewWrapper> extends Abs
         return updateObjectValueConverter;
     }
 
-    protected Object getObject() {
-        return object;
-    }
-
-    protected VW getViewWrapper() {
-        return vw;
-    }
-
     @Override
     public void release() {
         super.release();
-        this.vw.release();
-        this.vw = null;
+        if (vb instanceof ViewBinder) {
+            View view = this.view.get();
+            if (view != null)
+                ((ViewBinder) vb).removeListeners(view);
+            ((ViewBinder) vb).release();
+        }
+        this.vb = null;
         this.updateObjectValueConverter = null;
         this.updateUIConverter = null;
-    }
-
-    @Override
-    public void onViewValueChanged(Object value) {
-        bindObject(value);
     }
 }

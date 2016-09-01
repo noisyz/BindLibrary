@@ -1,20 +1,22 @@
 package com.noisyz.bindlibrary.wrappers.impl.fields;
 
+import android.view.View;
+
 import com.noisyz.bindlibrary.utils.ReflectionUtils;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 
 import java.lang.reflect.Field;
 
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class FieldPropertyViewWrapper<VW extends AbsViewWrapper> extends PropertyViewWrapper<VW> {
+public class FieldPropertyViewWrapper extends PropertyViewWrapper {
 
     private Field field;
 
-    public FieldPropertyViewWrapper(VW vw, Object object, Field field) {
-        super(vw, object);
+    public FieldPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Field field) {
+        super(iViewBinder, view, object);
         this.field = field;
     }
 

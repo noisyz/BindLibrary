@@ -1,7 +1,7 @@
 package com.noisyz.bindlibrary.base.property;
 
-import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
+
 
 /**
  * Created by Oleg on 05.04.2016.
@@ -9,25 +9,24 @@ import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 public class Property {
 
     private String propertyName;
-    private PropertyViewWrapper propertyBinder;
+    private PropertyViewWrapper propertyViewWrapper;
 
     public Property(String propertyName, PropertyViewWrapper propertyBinder){
-        this.propertyBinder = propertyBinder;
+        propertyBinder.setPropertyName(propertyName);
+        this.propertyViewWrapper = propertyBinder;
         this.propertyName = propertyName;
-        this.propertyBinder.setPropertyName(propertyName);
     }
 
     public String getPropertyName() {
         return propertyName;
     }
 
-    public AbsUIBinder getPropertyBinder() {
-        return propertyBinder;
+    public PropertyViewWrapper getPropertyBinder() {
+        return propertyViewWrapper;
     }
 
     public void release(){
-        propertyBinder.release();
-        propertyBinder = null;
         propertyName = null;
+        propertyViewWrapper = null;
     }
 }

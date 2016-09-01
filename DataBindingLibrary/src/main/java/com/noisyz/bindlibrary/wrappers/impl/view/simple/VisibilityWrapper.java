@@ -2,27 +2,19 @@ package com.noisyz.bindlibrary.wrappers.impl.view.simple;
 
 import android.view.View;
 
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 
 /**
  * Created by Oleg on 18.03.2016.
  */
-public class VisibilityWrapper<V extends View> extends AbsViewWrapper {
-
-
-    public VisibilityWrapper(V v) {
-        super(v);
-    }
+public class VisibilityWrapper implements IViewBinder<Boolean, View> {
 
     @Override
-    public void bindUI(Object object) {
-        if (object != null) {
-            boolean value = Boolean.valueOf(object.toString());
-            if (value) {
-                getView().setVisibility(View.VISIBLE);
-            } else {
-                getView().setVisibility(View.GONE);
-            }
+    public void bindUI(Boolean aBoolean, View view) {
+        if (aBoolean) {
+            view.setVisibility(View.VISIBLE);
+        } else {
+            view.setVisibility(View.GONE);
         }
     }
 }

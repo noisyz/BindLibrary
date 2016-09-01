@@ -2,7 +2,7 @@ package com.noisyz.bindlibrary.annotations.methods;
 
 import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
 import com.noisyz.bindlibrary.conversion.EmptyConverter;
-import com.noisyz.bindlibrary.wrappers.impl.view.AbsViewWrapper;
+import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,7 +13,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CustomGetterMethod {
 
-    Class<? extends AbsViewWrapper> value();
+    Class<? extends IViewBinder> value();
 
     String propertyKey() default "";
 
