@@ -86,4 +86,9 @@ public class BindingManager implements UIBinder, ParentBinder {
             binders.get(propertyKey).setDataUpdatedCallback(callback);
         return this;
     }
+
+    @Override
+    public UIBinder getParentBinder() {
+        return null;
+    }
 }
