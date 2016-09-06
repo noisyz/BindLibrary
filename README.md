@@ -5,14 +5,14 @@ Introduction of using data binding.
 Gradle:
 
 ```gradle
-compile 'com.noisyz.bindlibrary:DataBindingLibrary:0.2.0'
+compile 'com.noisyz.bindlibrary:DataBindingLibrary:1.0.0'
 ```
 Maven:
 ```maven
 <dependency> 
     <groupId>com.noisyz.bindlibrary</groupId> 
     <artifactId>DataBindingLibrary</artifactId> 
-    <version>0.2.0</version> 
+    <version>1.0.0</version> 
     <type>pom</type> 
 </dependency>
 ```
@@ -57,7 +57,7 @@ strings.xml
 
 You can use simple @Field annotation and set propertyType what you need:
 
-TEXT, BOOLEAN, FLOAT_TEXT, PROGRESS, RATING, RATING_CHANGEBLE, PROGRESS_CHANGEBLE, VISIBILITY, ENABLED.
+TEXT, TEXT_RES,  FLOAT_TEXT, DOUBLE_TEXT, BOOLEAN, PROGRESS, RATING, RATING_CHANGEABLE, PROGRESS_CHANGEABLE, VISIBILITY, ENABLED
 
 ```java
 public class Movie{
@@ -67,7 +67,7 @@ public class Movie{
 ...
 }
 ```
-Remember, if you use @Field or another field annotation, then your propertyKey is a name of field, which is annoted.
+Remember, if you use @Field or another field annotation, then your propertyKey is a name of field, what is annoted.
 
 ### 2.1.2. Converters.
 Now we need to show date in text, but our view must receive a primitive value.
@@ -117,8 +117,7 @@ Use @ImageField.
 ```
 @ImageField receives a ImageProvider to know how load your image in your ImageView.
 
-GlideImageProvider is support with this library. 
-Another supported providers are FileImageProvider, PicassoImageProvider, ResourceImageProvider.
+Supported providers: GlideImageProvider, FileImageProvider, PicassoImageProvider, ResourceImageProvider.
 
 You can create custom ImageProvider with extending AsyncImageProvider or SyncImageProvider.
 
@@ -184,9 +183,9 @@ public static final String KEY_GENRE = "genre"
 ### 2.2.2. @ImageGetter, @SimpleAdapterViewGetter, @SimpleAdapterViewSetter. 
 They work like their analogies @ImageField, @AdapterViewField.
 # 3. Use binding. 
-## 3.1. BindingManager, ObjectDataBinder, DataUpdatedCallback.
-### 3.1.1. ObjectDataBinder.
-You can use ObjectDataBinder with your object instance on the next way:
+## 3.1. BindingManager, ObjectViewBinder, DataUpdatedCallback.
+### 3.1.1. ObjectViewBinder.
+You can use ObjectViewBinder with your object instance on the next way:
 
 ```java
 public class DetailActivity extends AppCompatActivity {
@@ -209,15 +208,14 @@ public class DetailActivity extends AppCompatActivity {
       setContentView(R.layout.activity_detail);
       
       //This is all what we need for bind our object values and current view.
-      new ObjectDataBinder(movie).registerView(this).bindUI();
+      new ObjectViewBinder(movie).registerView(this).bindUI();
    }
 }
 ```
 
-ObjectDataBinder has 3 methods for registering view.
+ObjectViewBinder has 2 methods for registering view.
 - registerView(View view);
 - registerView(Activity activity);
-- registerView(Fragment fragment);
  
 He support handling click event.
 - setOnElementClickListener(int elementId, OnClickListener onClickListener);
@@ -225,7 +223,7 @@ He support handling click event.
 
 ```java
 ...
-new ObjectDataBinder(movie).registerView(this).setOnElementClick(R.id.save_button, new View.OnClickListener() {
+new ObjectViewBinder(movie).registerView(this).setOnElementClick(R.id.save_button, new View.OnClickListener() {
          @Override
          public void onClick(View view) {
               save();
@@ -240,8 +238,8 @@ Use BindingManager to bind binders;)
 ```java
 ...
 BindingManager.newInstance().
-newBinder("CurrentMovieBinder", new ObjectDataBinder(movie).registerView(SomeMovieView)).
-newBinder("CurrentUserBinder", new ObjectDataBinder(user).registerView(SomeUserView)).
+newBinder("CurrentMovieBinder", new ObjectViewBinder(movie).registerView(SomeMovieView)).
+newBinder("CurrentUserBinder", new ObjectViewBinder(user).registerView(SomeUserView)).
 bindUI();
 ...
 ```
@@ -253,8 +251,8 @@ For thats you have 3 ways:
 ```java
 ...
 BindingManager.newInstance().
-newBinder("CurrentMovieBinder", new ObjectDataBinder(movie).registerView(SomeMovieView)).
-newBinder("CurrentUserBinder", new ObjectDataBinder(user).registerView(SomeUserView)).
+newBinder("CurrentMovieBinder", new ObjectViewBinder(movie).registerView(SomeMovieView)).
+newBinder("CurrentUserBinder", new ObjectViewBinder(user).registerView(SomeUserView)).
 setDataUpdatedCallback(new DataUpdatedCallback() {
         /**That means so something in your objects has been changed
          @UIBinder - where changed.
@@ -270,10 +268,10 @@ setDataUpdatedCallback(new DataUpdatedCallback() {
 bindUI();
 ...
 ```
-####B) Listen ObjectDataBinder:
+####B) Listen ObjectViewBinder:
 ```java
 ...
-new ObjectDataBinder(movie).registerView(SomeMovieView).
+new ObjectViewBinder(movie).registerView(SomeMovieView).
 setDataUpdatedCallback(new DataUpdatedCallback<Movie, Object>() {
         /**
          all the same, which in previous example, but here we have our specific object.
@@ -289,10 +287,10 @@ bindUI();
 ####C) "We need to go deeper". (©, "Inception"):
 ```java
 ...
-new ObjectDataBinder(movie).registerView(SomeMovieView).
+new ObjectViewBinder(movie).registerView(SomeMovieView).
 setDataUpdatedCallback("publicationDate", new DataUpdatedCallback<Movie, Date>() {
         /**
-         Now we can listen when changes a specific property of our object
+         Now we can listen when  a specific property of our object will be changed
           */
          @Override
          public void onDataUpdated(UIBinder uiBinder, Movie movie, String propertyName, Date newDate) {
@@ -394,34 +392,52 @@ BindAdapter adapter = new BindAdapter(MovieStore.getAllMovies(), new BaseLayoutR
 
 # 4. Custom ViewWrappers.
 For use binding in custom view you need:
-##4.1. First you need to use custom viewwrapper for that. Extend AbsViewWrapper.java.
+##4.1. 
+First you need to use custom viewbinder for that. Implement IViewBinder.java.
 
 ```java
 ...
-public class CustomViewWrapper extends AbsViewWrapper<CustomView> implements CustomView.OnCustomViewListener{
-    
-    public CustomViewWrapper(CustomView customView) {
-        super(customView);
-        customView.setCustomViewListener(this);
-    }
 
+public class CustomViewBinder implements IViewBinder<String, CustomView> {
     @Override
-    public void bindUI(Object value) {
-        getView().setValue(value);
-    }
-
-    /**If you want create two way binding, then you must call 
-    @bindObject
-    */
-    @Override
-    public void onCustomViewSomethingChanged(Object newValue) {
-        bindObject(newValue);
+    public void bindUI(String s, CustomView customView) {
+        customView.setValue(s);
     }
 }
 ...
 ```
+If your view needs change object value, then you must extend ViewBinder
+```java
+...
+public class CustomViewBinder extends ViewBinder<String, CustomView> implements CustomView.OnCustomViewListener {
+@Override
+    public void bindUI(String s, CustomView customView) {
+        customView.setValue(s);
+    }
+
+    @Override
+    public void addListeners(CustomView customView) {
+        customView.setCustomViewListener(this);
+    }
+
+    @Override
+    public void removeListeners(CustomView customView) {
+        customView.setCustomViewListener(this);
+    }
+
+    @Override
+    public String getViewValue(CustomView customView) {
+        return customView.getCurrentValue();
+    }
+
+    @Override
+    public void onCustomViewSomethingChanged() {
+        bindObject();
+    }
+...
+```
 ##4.2. Update our object class with @CustomField or @CustomGetterMethod/@CustomSetterMethod.
-They need a Class<? extends AbsViewWrapper>. 
+They need a Class<? extends IViewBinder>. 
 With the rest they work as well as analogues
 ```java
 ...
@@ -429,6 +445,9 @@ With the rest they work as well as analogues
 private CustomProperty customProperty;
 ...
 ```
+
+#5. Supporting included objects.
+Use @ObjectField() or @ObjectGetterMethod().
 
 #Licence
 
