@@ -1,4 +1,4 @@
-package com.noisyz.bindlibrary.annotations.field;
+package com.noisyz.bindlibrary.annotations.field.collection;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

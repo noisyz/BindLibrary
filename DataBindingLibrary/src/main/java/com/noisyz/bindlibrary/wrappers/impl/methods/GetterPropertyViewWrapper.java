@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
  */
 public class GetterPropertyViewWrapper extends MethodPropertyViewWrapper {
 
-    public GetterPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method method) {
-        super(iViewBinder, view, object, method, GETTER);
+    public GetterPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, String propertyName, Method method) {
+        super(iViewBinder, view, object, propertyName, method, GETTER);
     }
 }

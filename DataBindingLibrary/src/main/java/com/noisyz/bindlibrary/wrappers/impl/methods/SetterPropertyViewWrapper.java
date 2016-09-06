@@ -9,9 +9,9 @@ import java.lang.reflect.Method;
 /**
  * Created by Oleg on 17.03.2016.
  */
-public class SetterPropertyViewWrapper extends MethodPropertyViewWrapper{
+public class SetterPropertyViewWrapper extends MethodPropertyViewWrapper {
 
-    public SetterPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method method) {
-        super(iViewBinder, view, object, method, SETTER);
+    public SetterPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, String propertyName, Method method) {
+        super(iViewBinder, view, object, propertyName, method, SETTER);
     }
 }

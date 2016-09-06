@@ -10,9 +10,11 @@ public abstract class AbsUIBinder implements UIBinder {
 
     private Object object;
     private DataUpdatedCallback dataUpdatedCallback;
+    private String binderKey;
 
-    public AbsUIBinder(Object object) {
+    public AbsUIBinder(Object object, String binderKey) {
         this.object = object;
+        this.binderKey = binderKey;
     }
 
     public AbsUIBinder setDataUpdatedCallback(DataUpdatedCallback callback) {
@@ -22,6 +24,12 @@ public abstract class AbsUIBinder implements UIBinder {
 
     @Override
     public void release() {
+        object = null;
+        dataUpdatedCallback = null;
+    }
+
+    public String getBinderKey(){
+        return binderKey;
     }
 
     protected void onObjectUpdated(Object object, String propertyName, Object value) {

@@ -9,16 +9,16 @@ import android.widget.ImageView;
 import com.noisyz.bindlibrary.annotations.converters.Conversion;
 import com.noisyz.bindlibrary.annotations.converters.ConvertToObject;
 import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
-import com.noisyz.bindlibrary.annotations.field.CustomField;
-import com.noisyz.bindlibrary.annotations.field.ImageField;
-import com.noisyz.bindlibrary.annotations.field.AdapterViewField;
-import com.noisyz.bindlibrary.annotations.methods.CustomGetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.CustomSetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.GetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.ImageGetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.SetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewGetter;
-import com.noisyz.bindlibrary.annotations.methods.SimpleAdapterViewSetter;
+import com.noisyz.bindlibrary.annotations.field.collection.AdapterViewField;
+import com.noisyz.bindlibrary.annotations.field.simple.CustomField;
+import com.noisyz.bindlibrary.annotations.field.simple.ImageField;
+import com.noisyz.bindlibrary.annotations.methods.simple.CustomGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.simple.CustomSetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.simple.GetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.simple.ImageGetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.simple.SetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.collection.SimpleAdapterViewGetter;
+import com.noisyz.bindlibrary.annotations.methods.collection.SimpleAdapterViewSetter;
 import com.noisyz.bindlibrary.annotations.propertyType;
 import com.noisyz.bindlibrary.conversion.Converter;
 import com.noisyz.bindlibrary.conversion.EmptyConverter;
@@ -31,7 +31,6 @@ import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 import com.noisyz.bindlibrary.wrappers.impl.view.adapterviewwrapper.SimpleAdapterViewWrapper;
 import com.noisyz.bindlibrary.wrappers.impl.view.image.ImageViewWrapper;
 import com.noisyz.bindlibrary.wrappers.impl.view.simple.ChangeableRatingBarWrapper;
-import com.noisyz.bindlibrary.wrappers.impl.view.simple.ChildObjectViewWrapper;
 import com.noisyz.bindlibrary.wrappers.impl.view.simple.CompoundButtonWrapper;
 import com.noisyz.bindlibrary.wrappers.impl.view.simple.DoubleTextWrapper;
 import com.noisyz.bindlibrary.wrappers.impl.view.simple.EnabledWrapper;
@@ -51,30 +50,19 @@ import java.lang.reflect.Method;
  */
 public class WrapperViewFactory {
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(com.noisyz.bindlibrary.annotations.field.Field fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(com.noisyz.bindlibrary.annotations.field.simple.Field fieldType, View view, Object object, Field field) {
         PropertyViewWrapper propertyViewWrapper = new FieldPropertyViewWrapper(getViewWrapper(fieldType.value(), view), view, object, field);
-        try {
-            setConversion(fieldType.twoWayConverter(), fieldType.convertToObject(), fieldType.convertToUI(), propertyViewWrapper);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+        setConversion(fieldType.twoWayConverter(), fieldType.convertToObject(), fieldType.convertToUI(), propertyViewWrapper);
         return propertyViewWrapper;
     }
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(CustomField fieldType, View view, Object object, Field field) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(CustomField fieldType, View view,
+                                                                   Object object, Field field) {
         IViewBinder iViewBinder = getCustomViewWrapper(fieldType.value());
         if (iViewBinder != null) {
             PropertyViewWrapper propertyViewWrapper = new FieldPropertyViewWrapper(
                     getCustomViewWrapper(fieldType.value()), view, object, field);
-            try {
-                setConversion(fieldType.twoWayConverter(), fieldType.convertToObject(), fieldType.convertToUI(), propertyViewWrapper);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            setConversion(fieldType.twoWayConverter(), fieldType.convertToObject(), fieldType.convertToUI(), propertyViewWrapper);
             return propertyViewWrapper;
         }
         return null;
@@ -91,34 +79,24 @@ public class WrapperViewFactory {
         return null;
     }
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(GetterMethod getterMethod, SetterMethod setterMethod, View view, Object object, Method getter, Method setter) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(String propertyKey, GetterMethod getterMethod, SetterMethod setterMethod,
+                                                                   View view, Object object, Method getter, Method setter) {
         if (getterMethod == null)
             throw new GetterMethodNullException();
         PropertyViewWrapper propertyViewWrapper =
-                new MethodPropertyViewWrapper(getViewWrapper(getterMethod.value(), view), view, object, getter, setter);
-        try {
-            setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+                new MethodPropertyViewWrapper(getViewWrapper(getterMethod.value(), view), view, object, propertyKey, getter, setter);
+        setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
         return propertyViewWrapper;
     }
 
-    public static PropertyViewWrapper getSimplePropertyViewWrapper(CustomGetterMethod getterMethod, CustomSetterMethod setterMethod, View view, Object object, Method getter, Method setter) {
+    public static PropertyViewWrapper getSimplePropertyViewWrapper(String propertyKey, CustomGetterMethod getterMethod, CustomSetterMethod setterMethod, View view,
+                                                                   Object object, Method getter, Method setter) {
         if (getterMethod == null)
             throw new GetterMethodNullException();
         IViewBinder iViewBinder = getCustomViewWrapper(getterMethod.value());
         if (iViewBinder != null) {
-            PropertyViewWrapper propertyViewWrapper = new MethodPropertyViewWrapper(iViewBinder, view, object, getter, setter);
-            try {
-                setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
-            }
+            PropertyViewWrapper propertyViewWrapper = new MethodPropertyViewWrapper(iViewBinder, view, object, propertyKey, getter, setter);
+            setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
             return propertyViewWrapper;
         }
         return null;
@@ -163,9 +141,6 @@ public class WrapperViewFactory {
                 case ENABLED:
                     viewWrapper = new EnabledWrapper();
                     break;
-                case OBJECT:
-                    viewWrapper = new ChildObjectViewWrapper();
-                    break;
             }
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -174,21 +149,28 @@ public class WrapperViewFactory {
         return viewWrapper;
     }
 
-    private static void setConversion(Conversion conversion, ConvertToObject convertToObject, ConvertToUI convertToUI, PropertyViewWrapper viewWrapper) throws InstantiationException, IllegalAccessException {
-        TwoWayConverter converter = conversion.value().newInstance();
-        if (!(converter instanceof EmptyConverter)) {
-            viewWrapper.setUpdateUIConverter(converter.getConverterToUi());
-            viewWrapper.setUpdateObjectConverter(converter.getConverterToObject());
-        } else {
-            if (convertToObject != null) {
-                Converter converterToObject = convertToObject.value().newInstance();
-                viewWrapper.setUpdateObjectConverter(converterToObject);
-            }
+    private static void setConversion(Conversion conversion, ConvertToObject convertToObject, ConvertToUI convertToUI,
+                                      PropertyViewWrapper viewWrapper) {
+        try {
+            TwoWayConverter converter = conversion == null ? new EmptyConverter() : conversion.value().newInstance();
+            if (!(converter instanceof EmptyConverter)) {
+                viewWrapper.setUpdateUIConverter(converter.getConverterToUi());
+                viewWrapper.setUpdateObjectConverter(converter.getConverterToObject());
+            } else {
+                if (convertToObject != null) {
+                    Converter converterToObject = convertToObject.value().newInstance();
+                    viewWrapper.setUpdateObjectConverter(converterToObject);
+                }
 
-            if (convertToUI != null) {
-                Converter converterToUI = convertToUI.value().newInstance();
-                viewWrapper.setUpdateUIConverter(converterToUI);
+                if (convertToUI != null) {
+                    Converter converterToUI = convertToUI.value().newInstance();
+                    viewWrapper.setUpdateUIConverter(converterToUI);
+                }
             }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
     }
@@ -206,10 +188,10 @@ public class WrapperViewFactory {
         return null;
     }
 
-    public static PropertyViewWrapper getImagePropertyViewWrapper(ImageGetterMethod fieldType, ImageView view, Object object, Method method) {
+    public static PropertyViewWrapper getImagePropertyViewWrapper(String propertyKey, ImageGetterMethod fieldType, ImageView view, Object object, Method method) {
         try {
             IViewBinder viewWrapper = new ImageViewWrapper(fieldType.value().newInstance());
-            PropertyViewWrapper propertyViewWrapper = new GetterPropertyViewWrapper(viewWrapper, view, object, method);
+            PropertyViewWrapper propertyViewWrapper = new GetterPropertyViewWrapper(viewWrapper, view, object, propertyKey, method);
             return propertyViewWrapper;
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -229,7 +211,7 @@ public class WrapperViewFactory {
         return fieldPropertyViewWrapper;
     }
 
-    public static PropertyViewWrapper getSimpleAdapterViewWrapper(SimpleAdapterViewGetter getterType,
+    public static PropertyViewWrapper getSimpleAdapterViewWrapper(String propertyKey, SimpleAdapterViewGetter getterType,
                                                                   SimpleAdapterViewSetter setterType,
                                                                   AdapterView view, Object object, Method getter, Method setter) {
 
@@ -254,7 +236,7 @@ public class WrapperViewFactory {
         ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(view.getContext(), layoutResID, values);
         view.setAdapter(spinnerArrayAdapter);
         SimpleAdapterViewWrapper wrapper = new SimpleAdapterViewWrapper(indent);
-        PropertyViewWrapper fieldPropertyViewWrapper = new MethodPropertyViewWrapper(wrapper, view, object, getter, setter);
+        PropertyViewWrapper fieldPropertyViewWrapper = new MethodPropertyViewWrapper(wrapper, view, object, propertyKey, getter, setter);
         return fieldPropertyViewWrapper;
     }
 }

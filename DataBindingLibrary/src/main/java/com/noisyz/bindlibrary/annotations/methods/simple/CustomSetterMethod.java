@@ -1,4 +1,4 @@
-package com.noisyz.bindlibrary.annotations.methods;
+package com.noisyz.bindlibrary.annotations.methods.simple;
 
 import com.noisyz.bindlibrary.annotations.converters.ConvertToObject;
 import com.noisyz.bindlibrary.conversion.EmptyConverter;

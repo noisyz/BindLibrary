@@ -8,7 +8,8 @@ import android.view.View;
 
 import com.noisyz.bindexample.model.Movie;
 import com.noisyz.bindexample.model.MovieStore;
-import com.noisyz.bindlibrary.base.impl.adapter.recyclerview.RecyclerBindAdapter;
+
+import com.noisyz.bindlibrary.base.impl.adapter.recycler.RecyclerBindAdapter;
 import com.noisyz.bindlibrary.callback.clickevent.OnItemClickListener;
 import com.noisyz.noisybindexample.R;
 

@@ -2,11 +2,10 @@ package com.noisyz.bindexample.model;
 
 import com.noisyz.bindexample.utils.DateConverter;
 import com.noisyz.bindlibrary.annotations.converters.Conversion;
-import com.noisyz.bindlibrary.annotations.field.Field;
-import com.noisyz.bindlibrary.annotations.field.ImageField;
+import com.noisyz.bindlibrary.annotations.field.simple.Field;
+import com.noisyz.bindlibrary.annotations.field.simple.ImageField;
 import com.noisyz.bindlibrary.annotations.propertyType;
 import com.noisyz.bindlibrary.callback.imageproperty.impl.GlideImageProvider;
-import com.noisyz.bindlibrary.callback.imageproperty.impl.PicassoImageProvider;
 
 import java.util.Date;
 

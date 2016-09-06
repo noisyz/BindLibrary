@@ -5,7 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+
+import com.noisyz.bindlibrary.base.impl.ObjectViewBinder;
 import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListener;
 import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListenerWrapper;
 import com.noisyz.bindlibrary.callback.clickevent.OnItemClickListener;
@@ -126,7 +127,7 @@ public class BindAdapter extends BaseAdapter {
 
 
     static class BinderHolder {
-        ObjectDataBinder objectDataBinder;
+        ObjectViewBinder objectViewBinder;
     }
 
     @Override
@@ -138,13 +139,13 @@ public class BindAdapter extends BaseAdapter {
         if (view == null) {
             view = LayoutInflater.from(parent.getContext()).inflate(currentItemLayoutID, null);
             binderHolder = new BinderHolder();
-            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
+            binderHolder.objectViewBinder = new ObjectViewBinder(object).registerView(view);
             view.setTag(binderHolder);
         } else {
             binderHolder = (BinderHolder) view.getTag();
-            binderHolder.objectDataBinder.setObject(object);
+            binderHolder.objectViewBinder.setObject(object);
         }
-        binderHolder.objectDataBinder.bindUI();
+        binderHolder.objectViewBinder.bindUI();
 
         final View finalView = view;
 

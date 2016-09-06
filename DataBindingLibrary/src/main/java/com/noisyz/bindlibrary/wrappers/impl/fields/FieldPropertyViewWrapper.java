@@ -16,7 +16,7 @@ public class FieldPropertyViewWrapper extends PropertyViewWrapper {
     private Field field;
 
     public FieldPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Field field) {
-        super(iViewBinder, view, object);
+        super(iViewBinder, view, object, field.getName());
         this.field = field;
     }
 

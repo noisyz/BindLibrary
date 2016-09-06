@@ -49,3 +49,6 @@ dependencies {
 }
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
 //apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/bintrayv1.gradle'
+
+//bintray.user=noisyz
+//bintray.apikey=7cf8cacb29af11a0f74ec2d422d097b57313e8bc

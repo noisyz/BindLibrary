@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.noisyz.bindexample.model.Movie;
 import com.noisyz.bindexample.model.MovieStore;
-import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+import com.noisyz.bindlibrary.base.impl.ObjectViewBinder;
 import com.noisyz.noisybindexample.R;
 
 public class DetailActivity extends AppCompatActivity {
@@ -29,6 +29,6 @@ public class DetailActivity extends AppCompatActivity {
 
       final Movie movie = MovieStore.getAllMovies().get(movieId);
       setContentView(R.layout.activity_detail);
-      new ObjectDataBinder(movie).registerView(this).bindUI();
+      new ObjectViewBinder(movie).registerView(this).bindUI();
    }
 }

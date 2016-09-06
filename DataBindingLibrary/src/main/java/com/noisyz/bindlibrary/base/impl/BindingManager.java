@@ -1,7 +1,6 @@
 package com.noisyz.bindlibrary.base.impl;
 
 
-import com.noisyz.bindlibrary.base.ParentBinder;
 import com.noisyz.bindlibrary.base.UIBinder;
 import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
 
@@ -10,7 +9,7 @@ import java.util.HashMap;
 /**
  * Created by Oleg on 18.03.2016.
  */
-public class BindingManager implements UIBinder, ParentBinder {
+public class BindingManager implements UIBinder{
 
     private HashMap<String, UIBinder> binders;
     private DataUpdatedCallback dataUpdatedCallback;
@@ -80,15 +79,9 @@ public class BindingManager implements UIBinder, ParentBinder {
         binders = null;
     }
 
-    @Override
     public BindingManager setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback) {
         if (binders.containsKey(propertyKey))
             binders.get(propertyKey).setDataUpdatedCallback(callback);
         return this;
-    }
-
-    @Override
-    public UIBinder getParentBinder() {
-        return null;
     }
 }

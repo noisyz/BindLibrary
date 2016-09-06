@@ -1,4 +1,8 @@
-package com.noisyz.bindlibrary.annotations.methods;
+package com.noisyz.bindlibrary.annotations.methods.simple;
+
+
+
+import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -7,14 +11,10 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Oleg on 18.03.2016.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SimpleAdapterViewSetter {
-    int indent() default 0;
+public @interface ImageGetterMethod {
+    Class<? extends ImageProvider> value();
 
     String propertyKey() default "";
 
     int propertyKeyResId() default 0;
-
-    int resourceArray() default 0;
-
-    int layoutResID() default 0;
 }

@@ -18,11 +18,10 @@ public abstract class PropertyViewWrapper<VB extends IViewBinder> extends AbsUIB
     private Converter updateUIConverter = new EmptyConverter(), updateObjectValueConverter = new EmptyConverter();
 
     private VB vb;
-    private String propertyName;
     private WeakReference<View> view;
 
-    public PropertyViewWrapper(VB vb, View view, Object object) {
-        super(object);
+    public PropertyViewWrapper(VB vb, View view, Object object, String propertyName) {
+        super(object, propertyName);
         this.vb = vb;
         this.view = new WeakReference<>(view);
         if (vb instanceof ViewBinder) {
@@ -30,14 +29,6 @@ public abstract class PropertyViewWrapper<VB extends IViewBinder> extends AbsUIB
             viewBinder.addListeners(view);
             viewBinder.setOnViewValueChangedListener(this);
         }
-    }
-
-    public void setPropertyName(String propertyName) {
-        this.propertyName = propertyName;
-    }
-
-    public String getPropertyName() {
-        return propertyName;
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.noisyz.bindlibrary.wrappers.impl.view.simple;
 
 import android.view.View;
 
-import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+import com.noisyz.bindlibrary.base.impl.ObjectViewBinder;
 import com.noisyz.bindlibrary.wrappers.impl.view.IViewBinder;
 
 /**
@@ -12,6 +12,6 @@ public class ChildObjectViewWrapper implements IViewBinder<Object, View> {
 
     @Override
     public void bindUI(Object o, View view) {
-        new ObjectDataBinder(o).registerView(view).bindUI();
+        new ObjectViewBinder(o).registerView(view).bindUI();
     }
 }

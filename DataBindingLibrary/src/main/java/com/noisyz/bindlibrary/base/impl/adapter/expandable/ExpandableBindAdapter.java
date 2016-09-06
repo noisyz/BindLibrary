@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 
-import com.noisyz.bindlibrary.base.impl.ObjectDataBinder;
+import com.noisyz.bindlibrary.base.impl.ObjectViewBinder;
 import com.noisyz.bindlibrary.callback.ChildrenProvider;
 import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListener;
 import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListenerWrapper;
@@ -96,7 +96,7 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
     }
 
     static class BinderHolder {
-        ObjectDataBinder objectDataBinder;
+        ObjectViewBinder objectViewBinder;
     }
 
     @Override
@@ -106,13 +106,13 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             binderHolder = new BinderHolder();
             view = LayoutInflater.from(viewGroup.getContext()).inflate(parentLayoutID, null);
-            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
+            binderHolder.objectViewBinder = new ObjectViewBinder(object).registerView(view);
             view.setTag(binderHolder);
         } else {
             binderHolder = (BinderHolder) view.getTag();
-            binderHolder.objectDataBinder.setObject(object);
+            binderHolder.objectViewBinder.setObject(object);
         }
-        binderHolder.objectDataBinder.bindUI();
+        binderHolder.objectViewBinder.bindUI();
 
         final View finalView = view;
 
@@ -149,13 +149,13 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
         if (view == null) {
             binderHolder = new BinderHolder();
             view = LayoutInflater.from(viewGroup.getContext()).inflate(childLayoutID, null);
-            binderHolder.objectDataBinder = new ObjectDataBinder(object).registerView(view);
+            binderHolder.objectViewBinder = new ObjectViewBinder(object).registerView(view);
             view.setTag(binderHolder);
         } else {
             binderHolder = (BinderHolder) view.getTag();
-            binderHolder.objectDataBinder.setObject(object);
+            binderHolder.objectViewBinder.setObject(object);
         }
-        binderHolder.objectDataBinder.bindUI();
+        binderHolder.objectViewBinder.bindUI();
 
         final View finalView = view;
 

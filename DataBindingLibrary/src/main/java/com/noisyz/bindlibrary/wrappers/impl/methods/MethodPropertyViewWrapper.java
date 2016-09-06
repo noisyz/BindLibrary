@@ -18,14 +18,14 @@ public class MethodPropertyViewWrapper extends PropertyViewWrapper{
     public static final int SETTER = 1;
     private Method setter, getter;
 
-    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method getter, Method setter) {
-        super(iViewBinder, view, object);
+    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, String propertyName, Method getter, Method setter) {
+        super(iViewBinder, view, object, propertyName);
         this.getter = getter;
         this.setter = setter;
     }
 
-    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, Method method, int mode) {
-        super(iViewBinder, view, object);
+    public MethodPropertyViewWrapper(IViewBinder iViewBinder, View view, Object object, String propertyName, Method method, int mode) {
+        super(iViewBinder, view, object, propertyName);
         switch (mode) {
             case GETTER:
                 getter = method;
@@ -46,7 +46,7 @@ public class MethodPropertyViewWrapper extends PropertyViewWrapper{
         if (setter != null) {
             try {
                 ReflectionUtils.invokeSetterMethod(setter, getObject(), value);
-                onObjectUpdated(getObject(), getPropertyName(), value);
+                onObjectUpdated(getObject(), getBinderKey(), value);
             } catch (InvocationTargetException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {

@@ -1,8 +1,8 @@
-package com.noisyz.bindlibrary.annotations.methods;
-
+package com.noisyz.bindlibrary.annotations.field.simple;
 
 
 import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.impl.PicassoImageProvider;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -11,10 +11,6 @@ import java.lang.annotation.RetentionPolicy;
  * Created by Oleg on 18.03.2016.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ImageGetterMethod {
+public @interface ImageField {
     Class<? extends ImageProvider> value();
-
-    String propertyKey() default "";
-
-    int propertyKeyResId() default 0;
 }
