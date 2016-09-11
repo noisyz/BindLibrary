@@ -301,12 +301,16 @@ public class PropertyFactory {
                         if (!TextUtils.isEmpty(tagObj) && isField) {
                             views.add(child);
                             String newTag = "";
-                            for(int j = 0; j<tagsObj.length;j++){
-                                newTag+=tagObj;
-                                if(j<tagsObj.length-1)
-                                    newTag+="|";
+                            for (int j = 0; j < tagsObj.length; j++) {
+                                newTag += tagObj;
+                                if (j < tagsObj.length - 1)
+                                    newTag += "|";
                             }
-                            child.setTag(newTag);
+                            if (TextUtils.isEmpty(newTag)) {
+                                child.setTag(null);
+                            } else {
+                                child.setTag(newTag);
+                            }
                         }
                     }
                 }
