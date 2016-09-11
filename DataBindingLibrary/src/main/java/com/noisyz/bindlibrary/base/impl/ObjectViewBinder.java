@@ -35,7 +35,7 @@ public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachState
         if (object != null) {
             List<AbsUIBinder> binders = PropertyFactory.getPropertyList(this, object, parentView);
             binders.removeAll(Collections.singleton(null));
-            addChildCollection(binders);
+            addChildren(binders);
         }
         return this;
     }

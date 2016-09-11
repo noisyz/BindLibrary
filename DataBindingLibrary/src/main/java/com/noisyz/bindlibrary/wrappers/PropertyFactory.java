@@ -275,7 +275,7 @@ public class PropertyFactory {
     private static AbsUIBinder getAbsUIBinderFromProperties(ParentBinder parentBinder, Object object, List<AbsUIBinder> properties) {
         AbsUIBinder absUIBinder = null;
         if (properties.size() > 1) {
-            absUIBinder = new TreeUIBinder(object, parentBinder).addChildCollection(properties);
+            absUIBinder = new TreeUIBinder(object, parentBinder).addChildren(properties);
         } else if (!properties.isEmpty()) {
             absUIBinder = properties.get(0);
         }
@@ -300,6 +300,13 @@ public class PropertyFactory {
                         boolean isField = onlyOne ? tagObj.equals(tag) : tagObj.contains(tag);
                         if (!TextUtils.isEmpty(tagObj) && isField) {
                             views.add(child);
+                            String newTag = "";
+                            for(int j = 0; j<tagsObj.length;j++){
+                                newTag+=tagObj;
+                                if(j<tagsObj.length-1)
+                                    newTag+="|";
+                            }
+                            child.setTag(newTag);
                         }
                     }
                 }

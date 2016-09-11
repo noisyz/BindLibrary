@@ -14,7 +14,6 @@ import java.util.List;
 public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
 
     private ParentBinder parentBinder;
-    private List<AbsUIBinder> childBinders;
 
     public TreeUIBinder(Object object, ParentBinder parentBinder) {
         super(object, object.getClass().getName());
@@ -27,7 +26,7 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
 
     @Override
     public void bindUI() {
-        for (AbsUIBinder absUIBinder : childBinders) {
+        for (AbsUIBinder absUIBinder : getChildren()) {
             absUIBinder.bindUI();
         }
     }
@@ -35,15 +34,22 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
     @Override
     public TreeUIBinder setDataUpdatedCallback(DataUpdatedCallback callback) {
         super.setDataUpdatedCallback(callback);
-        for (AbsUIBinder absUIBinder : childBinders) {
+        for (AbsUIBinder absUIBinder : getChildren()) {
             absUIBinder.setDataUpdatedCallback(callback);
         }
         return this;
     }
 
     @Override
+    public void initChildrenData() {
+        if (children == null) {
+            children = new ArrayList<>();
+        }
+    }
+
+    @Override
     public TreeUIBinder setDataUpdatedCallback(String propertyKey, DataUpdatedCallback callback) {
-        for (AbsUIBinder absUIBinder : childBinders) {
+        for (AbsUIBinder absUIBinder : getChildren()) {
             if (absUIBinder.getBinderKey().equals(propertyKey))
                 absUIBinder.setDataUpdatedCallback(callback);
         }
@@ -51,14 +57,8 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
     }
 
     @Override
-    public List<AbsUIBinder> getChildList() {
-        return childBinders;
-    }
-
-
-    @Override
     public AbsUIBinder getChild(String propertyKey) {
-        for (AbsUIBinder absUIBinder : childBinders) {
+        for (AbsUIBinder absUIBinder : getChildren()) {
             if (absUIBinder.getBinderKey().equals(propertyKey))
                 return absUIBinder;
         }
@@ -67,15 +67,15 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
 
     @Override
     public TreeUIBinder addChild(AbsUIBinder absUIBinder) {
-        initChildList();
-        childBinders.add(absUIBinder);
+        initChildrenData();
+        getChildren().add(absUIBinder);
         return this;
     }
 
     @Override
-    public TreeUIBinder addChildCollection(List<AbsUIBinder> absUIBinders) {
-        initChildList();
-        childBinders.addAll(absUIBinders);
+    public TreeUIBinder addChildren(List<AbsUIBinder> absUIBinders) {
+        initChildrenData();
+        getChildren().addAll(absUIBinders);
         return this;
     }
 
@@ -83,7 +83,7 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
     @Override
     public void setObject(Object object) {
         super.setObject(object);
-        for(AbsUIBinder absUIBinder:childBinders)
+        for(AbsUIBinder absUIBinder:getChildren())
             absUIBinder.setObject(object);
     }
 
@@ -91,14 +91,8 @@ public class TreeUIBinder extends ParentBinder<List<AbsUIBinder>> {
     public void release(){
         super.release();
         parentBinder = null;
-        childBinders.clear();
-        childBinders = null;
-    }
-
-    private void initChildList(){
-        if (childBinders == null) {
-            childBinders = new ArrayList<>();
-        }
+        getChildren().clear();
+        children = null;
     }
 
     public ParentBinder getParentBinder() {
