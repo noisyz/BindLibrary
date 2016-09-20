@@ -85,7 +85,7 @@ public class WrapperViewFactory {
             throw new GetterMethodNullException();
         PropertyViewWrapper propertyViewWrapper =
                 new MethodPropertyViewWrapper(getViewWrapper(getterMethod.value(), view), view, object, propertyKey, getter, setter);
-        setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
+        setConversion(null, setterMethod == null ? null : setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
         return propertyViewWrapper;
     }
 
@@ -96,7 +96,7 @@ public class WrapperViewFactory {
         IViewBinder iViewBinder = getCustomViewWrapper(getterMethod.value());
         if (iViewBinder != null) {
             PropertyViewWrapper propertyViewWrapper = new MethodPropertyViewWrapper(iViewBinder, view, object, propertyKey, getter, setter);
-            setConversion(null, setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
+            setConversion(null, setterMethod == null ? null : setterMethod.convertToObject(), getterMethod.convertToUI(), propertyViewWrapper);
             return propertyViewWrapper;
         }
         return null;

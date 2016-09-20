@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://github.com/noisyz/BindLibrary'
     gitUrl = 'https://github.com/noisyz/BindLibrary.git'
 
-    libraryVersion = '1.0.2'
+    libraryVersion = '1.0.3'
 
     developerId = 'noisyz'
     developerName = 'Oleg Bogdan'

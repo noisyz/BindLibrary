@@ -1,9 +1,15 @@
 package com.noisyz.bindexample.model;
 
 import com.noisyz.bindexample.utils.DateConverter;
+import com.noisyz.bindexample.utils.DateToObject;
+import com.noisyz.bindexample.utils.DateToUI;
 import com.noisyz.bindlibrary.annotations.converters.Conversion;
+import com.noisyz.bindlibrary.annotations.converters.ConvertToObject;
+import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
 import com.noisyz.bindlibrary.annotations.field.simple.Field;
 import com.noisyz.bindlibrary.annotations.field.simple.ImageField;
+import com.noisyz.bindlibrary.annotations.methods.simple.GetterMethod;
+import com.noisyz.bindlibrary.annotations.methods.simple.SetterMethod;
 import com.noisyz.bindlibrary.annotations.propertyType;
 import com.noisyz.bindlibrary.callback.imageproperty.impl.GlideImageProvider;
 
@@ -17,7 +23,7 @@ public class Movie{
     @ImageField(GlideImageProvider.class)
     private String imageUrl;
 
-    @Field(value = propertyType.TEXT, twoWayConverter = @Conversion(DateConverter.class))
+
     private Date publicationDate;
 
     public Movie() {
@@ -41,10 +47,12 @@ public class Movie{
         return this;
     }
 
+    @GetterMethod(value = propertyType.TEXT, propertyKey = "publicationDate", convertToUI = @ConvertToUI(value = DateToUI.class))
     public Date getPublicationDate() {
         return publicationDate;
     }
 
+    @SetterMethod(value = propertyType.TEXT, propertyKey = "publicationDate", convertToObject = @ConvertToObject(value = DateToObject.class))
     public Movie setPublicationDate(Date publicationDate) {
         this.publicationDate = publicationDate;
         return this;
