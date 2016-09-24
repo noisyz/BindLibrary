@@ -5,14 +5,14 @@ Introduction of using data binding.
 Gradle:
 
 ```gradle
-compile 'com.noisyz.bindlibrary:DataBindingLibrary:1.0.2'
+compile 'com.noisyz.bindlibrary:DataBindingLibrary:1.0.3'
 ```
 Maven:
 ```maven
 <dependency> 
     <groupId>com.noisyz.bindlibrary</groupId> 
     <artifactId>DataBindingLibrary</artifactId> 
-    <version>1.0.2</version> 
+    <version>1.0.3</version> 
     <type>pom</type> 
 </dependency>
 ```
