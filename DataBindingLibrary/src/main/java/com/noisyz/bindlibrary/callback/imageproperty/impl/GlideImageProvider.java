@@ -19,13 +19,14 @@ public class GlideImageProvider extends AsyncImageProvider<String> {
     public void loadBitmap(String s) {
         if (!imageUrl.equals(s)) {
             String url = s.replaceAll("\\s", "%20");
-            Glide.with(getView().getContext()).load(url).dontAnimate().into(new SimpleTarget<GlideDrawable>() {
-                @Override
-                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                    getView().setImageDrawable(resource);
-
-                }
-            });
+            if (getView() != null)
+                Glide.with(getView().getContext()).load(url).dontAnimate().into(new SimpleTarget<GlideDrawable>() {
+                    @Override
+                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                        if (getView() != null)
+                            getView().setImageDrawable(resource);
+                    }
+                });
             imageUrl = url;
         }
     }
