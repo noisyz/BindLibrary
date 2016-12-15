@@ -11,6 +11,7 @@ import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListener;
 import com.noisyz.bindlibrary.callback.clickevent.OnElementClickListenerWrapper;
 import com.noisyz.bindlibrary.callback.clickevent.OnItemClickListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,6 +29,8 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
         this.parentLayoutID = parentLayoutID;
         this.childLayoutID = childLayoutID;
         this.childrenProvider = childrenProvider;
+        parentElementsClickWrappers = new ArrayList<>();
+        childElementsClickWrappers = new ArrayList<>();
     }
 
     public ExpandableBindAdapter setOnElementClickListener(int elementId, OnElementClickListener onClickListener) {
@@ -35,7 +38,7 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
         return this;
     }
 
-    public ExpandableBindAdapter setOnElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnElementsClickListener(OnElementClickListener onClickListener, int... elementIds) {
         parentElementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }
@@ -50,7 +53,7 @@ public class ExpandableBindAdapter extends BaseExpandableListAdapter {
         return this;
     }
 
-    public ExpandableBindAdapter setOnChildElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public ExpandableBindAdapter setOnChildElementsClickListener(OnElementClickListener onClickListener, int... elementIds) {
         childElementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }

@@ -1,11 +1,8 @@
 package com.noisyz.bindlibrary.base;
 
 import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
-import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
-import com.noisyz.bindlibrary.wrappers.impl.view.ObjectBinder;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**

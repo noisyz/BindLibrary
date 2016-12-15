@@ -6,15 +6,13 @@ import android.view.ViewGroup;
 
 import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.base.TreeUIBinder;
-import com.noisyz.bindlibrary.wrappers.PropertyFactory;
+import com.noisyz.bindlibrary.wrappers.impl.obj.PropertyFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by oleg on 05.09.16.
- */
+
 public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachStateChangeListener {
 
     private WeakReference<View> parentViewRef;
@@ -55,7 +53,7 @@ public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachState
         return this;
     }
 
-    public ObjectViewBinder setOnElementsClick(int[] elementsId, View.OnClickListener onClickListener) {
+    public ObjectViewBinder setOnElementsClick(View.OnClickListener onClickListener, int... elementsId) {
         for (int elementId : elementsId)
             setOnElementClick(elementId, onClickListener);
         return this;

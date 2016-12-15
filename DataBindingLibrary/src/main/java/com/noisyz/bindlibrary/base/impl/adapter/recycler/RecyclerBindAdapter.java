@@ -38,6 +38,7 @@ public class RecyclerBindAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
         this.itemList = itemList;
         mode = MODE_LIST;
+        elementsClickWrappers = new ArrayList<>();
     }
 
     public RecyclerBindAdapter(Object[] os, int layoutResID) {
@@ -46,6 +47,7 @@ public class RecyclerBindAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.os = os;
             mode = MODE_ARRAY;
         } else mode = MODE_INVALID;
+        elementsClickWrappers = new ArrayList<>();
     }
 
     public RecyclerBindAdapter(List itemList, LayoutResourceProvider mLayoutResourceProvider) {
@@ -75,7 +77,7 @@ public class RecyclerBindAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return this;
     }
 
-    public RecyclerBindAdapter setOnElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public RecyclerBindAdapter setOnElementsClickListener(OnElementClickListener onClickListener, int... elementIds) {
         elementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }

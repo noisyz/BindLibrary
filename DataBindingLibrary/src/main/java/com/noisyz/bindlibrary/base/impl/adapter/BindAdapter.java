@@ -39,6 +39,7 @@ public class BindAdapter extends BaseAdapter {
         }
         this.itemList = itemList;
         mode = MODE_LIST;
+        elementsClickWrappers = new ArrayList<>();
     }
 
     public BindAdapter(Object[] os, int layoutResID) {
@@ -47,6 +48,7 @@ public class BindAdapter extends BaseAdapter {
             this.os = os;
             mode = MODE_ARRAY;
         } else mode = MODE_INVALID;
+        elementsClickWrappers = new ArrayList<>();
     }
 
     public BindAdapter(List itemList, BaseLayoutResourceProvider mLayoutResourceProvider) {
@@ -76,7 +78,7 @@ public class BindAdapter extends BaseAdapter {
         return this;
     }
 
-    public BindAdapter setOnElementsClickListener(int[] elementIds, OnElementClickListener onClickListener) {
+    public BindAdapter setOnElementsClickListener(OnElementClickListener onClickListener, int... elementIds) {
         elementsClickWrappers.add(new OnElementClickListenerWrapper(elementIds, onClickListener));
         return this;
     }

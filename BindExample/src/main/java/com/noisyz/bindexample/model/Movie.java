@@ -1,16 +1,14 @@
 package com.noisyz.bindexample.model;
 
-import com.noisyz.bindexample.utils.DateConverter;
 import com.noisyz.bindexample.utils.DateToObject;
 import com.noisyz.bindexample.utils.DateToUI;
-import com.noisyz.bindlibrary.annotations.converters.Conversion;
-import com.noisyz.bindlibrary.annotations.converters.ConvertToObject;
-import com.noisyz.bindlibrary.annotations.converters.ConvertToUI;
-import com.noisyz.bindlibrary.annotations.field.simple.Field;
-import com.noisyz.bindlibrary.annotations.field.simple.ImageField;
-import com.noisyz.bindlibrary.annotations.methods.simple.GetterMethod;
-import com.noisyz.bindlibrary.annotations.methods.simple.SetterMethod;
-import com.noisyz.bindlibrary.annotations.propertyType;
+import com.noisyz.bindlibrary.annotations.view.converters.ConvertToObject;
+import com.noisyz.bindlibrary.annotations.view.converters.ConvertToUI;
+import com.noisyz.bindlibrary.annotations.view.field.simple.Field;
+import com.noisyz.bindlibrary.annotations.view.field.simple.ImageField;
+import com.noisyz.bindlibrary.annotations.view.methods.simple.GetterMethod;
+import com.noisyz.bindlibrary.annotations.view.methods.simple.SetterMethod;
+import com.noisyz.bindlibrary.annotations.view.propertyType;
 import com.noisyz.bindlibrary.callback.imageproperty.impl.GlideImageProvider;
 
 import java.util.Date;
