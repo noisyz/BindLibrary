@@ -5,21 +5,26 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.noisyz.bindlibrary.base.AbsUIBinder;
-import com.noisyz.bindlibrary.base.TreeUIBinder;
-import com.noisyz.bindlibrary.wrappers.impl.obj.PropertyFactory;
+import com.noisyz.bindlibrary.base.UIBinder;
+import com.noisyz.bindlibrary.property.abs.Property;
+import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
 
 import java.lang.ref.WeakReference;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachStateChangeListener {
+public abstract class ObjectViewBinder<T> implements UIBinder<T>, View.OnAttachStateChangeListener {
 
     private WeakReference<View> parentViewRef;
+    private T t;
+    private List<PropertyViewWrapper> propertyViewWrappers;
 
-    public ObjectViewBinder(Object object) {
-        super(object);
+    public ObjectViewBinder(T t) {
+        setBindObject(t);
+        initBinders();
     }
+
 
     public ObjectViewBinder registerView(Activity activity) {
         final View viewGroup = ((ViewGroup) activity
@@ -27,14 +32,21 @@ public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachState
         return registerView(viewGroup);
     }
 
-    public ObjectViewBinder registerView(View parentView) {
-        this.parentViewRef = new WeakReference<>(parentView);
-        Object object = getObject();
-        if (object != null) {
-            List<AbsUIBinder> binders = PropertyFactory.getPropertyList(this, object, parentView);
-            binders.removeAll(Collections.singleton(null));
-            addChildren(binders);
+    protected abstract List<Property> getProperties();
+
+    protected void initBinders() {
+        propertyViewWrappers = new ArrayList<>();
+        for (Property property : getProperties()) {
+            PropertyViewWrapper propertyViewWrapper = property.buildPropertyViewWrapper(t);
+            if (propertyViewWrapper != null)
+                propertyViewWrappers.add(propertyViewWrapper);
         }
+    }
+
+    public ObjectViewBinder<T> registerView(View parentView) {
+        parentViewRef = new WeakReference<>(parentView);
+        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
+            propertyViewWrapper.registerView((ViewGroup) parentView);
         return this;
     }
 
@@ -42,7 +54,7 @@ public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachState
         return parentViewRef.get();
     }
 
-    public ObjectViewBinder setOnElementClick(int elementId, View.OnClickListener onClickListener) {
+    public ObjectViewBinder<T> setOnElementClick(int elementId, View.OnClickListener onClickListener) {
         View parentView = getViewParent();
         if (parentView != null) {
             View child = parentView.findViewById(elementId);
@@ -61,15 +73,32 @@ public class ObjectViewBinder extends TreeUIBinder implements View.OnAttachState
 
 
     @Override
+    public void bindUI() {
+        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
+            propertyViewWrapper.bindUI();
+    }
+
+    @Override
+    public void setBindObject(T t) {
+        this.t = t;
+        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers) {
+            propertyViewWrapper.setBindObject(t);
+        }
+    }
+
+    @Override
+    public T getBindObject() {
+        return t;
+    }
+
+    @Override
     public void release() {
-        super.release();
         parentViewRef.clear();
         parentViewRef = null;
     }
 
     @Override
     public void onViewAttachedToWindow(View view) {
-
     }
 
     @Override

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AnnotationProcessor/AnnotationProcessor.iml" filepath="$PROJECT_DIR$/AnnotationProcessor/AnnotationProcessor.iml" />
       <module fileurl="file://$PROJECT_DIR$/BindExample/BindExample.iml" filepath="$PROJECT_DIR$/BindExample/BindExample.iml" />
       <module fileurl="file://$PROJECT_DIR$/BindLibrary.iml" filepath="$PROJECT_DIR$/BindLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/DataBindingLibrary/DataBindingLibrary.iml" filepath="$PROJECT_DIR$/DataBindingLibrary/DataBindingLibrary.iml" />

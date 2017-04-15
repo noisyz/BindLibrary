@@ -1,23 +1,15 @@
 package com.noisyz.bindlibrary.base;
 
-import com.noisyz.bindlibrary.callback.DataUpdatedCallback;
-
 /**
  * Created by Oleg on 18.03.2016.
  */
-public interface UIBinder {
+public interface UIBinder<BO> {
 
     void bindUI();
 
-    UIBinder setDataUpdatedCallback(DataUpdatedCallback callback);
+    void setBindObject(BO bo);
 
-    DataUpdatedCallback getDataUpdatedCallback();
-
-    boolean hasDataUpdatedCallback();
-
-    void setObject(Object object);
-
-    Object getObject();
+    BO getBindObject();
 
     void release();
 

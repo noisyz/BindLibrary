@@ -29,6 +29,5 @@ public class DetailActivity extends AppCompatActivity {
 
       final Movie movie = MovieStore.getAllMovies().get(movieId);
       setContentView(R.layout.activity_detail);
-      new ObjectViewBinder(movie).registerView(this).bindUI();
    }
 }

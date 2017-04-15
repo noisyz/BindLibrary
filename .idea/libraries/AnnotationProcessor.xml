@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="AnnotationProcessor">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/DataBindingLibrary/libs/AnnotationProcessor.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
