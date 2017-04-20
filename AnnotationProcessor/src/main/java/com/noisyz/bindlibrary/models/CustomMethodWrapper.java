@@ -1,22 +1,27 @@
 package com.noisyz.bindlibrary.models;
 
-import com.noisyz.bindlibrary.models.base.MethodItem;
+import com.noisyz.bindlibrary.StringUtils;
 import com.noisyz.bindlibrary.models.base.MethodWrapper;
-import com.noisyz.bindlibrary.models.key.Key;
 
 /**
  * Created by nero232 on 13.04.17.
  */
 
 public class CustomMethodWrapper extends MethodWrapper {
-    private Class<?> viewBinder;
+    private String viewBinder;
 
-    public CustomMethodWrapper(Class<?> viewBinder) {
+    public CustomMethodWrapper(String viewBinder) {
         this.viewBinder = viewBinder;
     }
 
     @Override
-    public String buildProperty(String className, Key key) {
-        return null;
+    protected String getProperty(String valueProvider, String keyInString) {
+        return "new CustomBinderProperty(\"" + viewBinder + "\", new "
+                + StringUtils.getShortType(valueProvider) + "(), " + keyInString + ")";
+    }
+
+    @Override
+    public String getPropertyClassName() {
+        return "com.noisyz.bindlibrary.property.CustomBinderProperty";
     }
 }

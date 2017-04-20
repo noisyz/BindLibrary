@@ -18,7 +18,6 @@ public class FileImageProvider extends AsyncImageProvider<String> {
             @Override
             public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
                 getView().setImageDrawable(resource);
-
             }
         });
     }

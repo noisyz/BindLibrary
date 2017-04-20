@@ -4,10 +4,10 @@ import com.noisyz.bindlibrary.annotation.Type;
 import com.noisyz.bindlibrary.annotation.methods.simple.Getter;
 import com.noisyz.bindlibrary.handler.AnnotationHandler;
 import com.noisyz.bindlibrary.handler.PrimitivesHandler;
+import com.noisyz.bindlibrary.models.DefaultMethodWrapper;
+import com.noisyz.bindlibrary.models.base.MethodItem;
 import com.noisyz.bindlibrary.models.key.Key;
 import com.noisyz.bindlibrary.models.key.KeyManager;
-import com.noisyz.bindlibrary.models.DefaultMethodItem;
-import com.noisyz.bindlibrary.models.base.MethodItem;
 
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
@@ -16,7 +16,12 @@ import javax.lang.model.element.ExecutableElement;
  * Created by nero232 on 23.03.17.
  */
 
-public class GetterHandler extends AnnotationHandler<Getter> {
+public class GetterHandler extends AnnotationHandler<DefaultMethodWrapper, Getter> {
+
+    @Override
+    protected DefaultMethodWrapper createMethodWrapper(ExecutableElement executableElement, Getter getter) {
+        return new DefaultMethodWrapper(getter.value());
+    }
 
     @Override
     protected MethodItem processAnnotation(ExecutableElement element, Getter getter) {
@@ -24,7 +29,7 @@ public class GetterHandler extends AnnotationHandler<Getter> {
             return PrimitivesHandler.buildGetterMethodItem(element);
         } else {
             String returnType = element.getReturnType().toString();
-            return new DefaultMethodItem(getter.value(), element.getSimpleName().toString(), returnType);
+            return new MethodItem(element.getSimpleName().toString(), returnType);
         }
     }
 

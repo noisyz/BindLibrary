@@ -40,11 +40,10 @@ public class TextViewWrapper extends ViewBinder<String, TextView> implements Tex
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+        bindObject(charSequence.toString());
     }
 
     @Override
     public void afterTextChanged(Editable editable) {
-        bindObject(editable.toString());
     }
 }

@@ -3,8 +3,8 @@
 
     <string name="action_modify">Modify In Background</string>
     <string name="save">Save</string>
-    <string name="key_image">image of film</string>
-    <string name="key_title">title of film</string>
-    <string name="key_genre">genre of film</string>
-    <string name="key_date">publicationDate of film</string>
+    <string name="key_image">imageUrl</string>
+    <string name="key_title">title</string>
+    <string name="key_genre">genre</string>
+    <string name="key_date">date</string>
 </resources>

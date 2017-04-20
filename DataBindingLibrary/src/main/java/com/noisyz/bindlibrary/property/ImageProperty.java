@@ -15,19 +15,24 @@ public class ImageProperty<BO, T> extends Property<BO, T> {
 
     private ImageProvider<T> imageProvider;
 
-    public ImageProperty(Class<? extends ImageProvider<T>> imageProvider, ValueProvider<BO, T> valueProvider, Key key) {
+    public ImageProperty(String imageProvider, ValueProvider<BO, T> valueProvider, Key key) {
         super(valueProvider, key);
         try {
-            this.imageProvider = imageProvider.newInstance();
+            this.imageProvider = (ImageProvider<T>) Class.forName(imageProvider).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public PropertyViewWrapper buildPropertyViewWrapper(BO bo) {
-        return new PropertyViewWrapper<>(new ImageViewWrapper<>(imageProvider), getValueProvider(), bo, getKey());
+        if (imageProvider != null)
+            return new PropertyViewWrapper<>(new ImageViewWrapper<>(imageProvider), getValueProvider(), bo, getKey());
+        else
+            return null;
     }
 }

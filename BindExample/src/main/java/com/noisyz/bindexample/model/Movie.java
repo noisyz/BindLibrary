@@ -1,19 +1,23 @@
 package com.noisyz.bindexample.model;
 
-import com.noisyz.bindlibrary.annotation.methods.simple.Bind;
+import android.util.Log;
 
+import com.noisyz.bindlibrary.annotation.methods.simple.Bind;
+import com.noisyz.bindlibrary.annotation.methods.simple.Child;
+import com.noisyz.bindlibrary.annotation.methods.simple.Image;
+import com.noisyz.bindlibrary.callback.imageproperty.impl.GlideImageProvider;
+import com.noisyz.bindlibrary.callback.imageproperty.impl.PicassoImageProvider;
+
+import java.io.Serializable;
 import java.util.Date;
 
-@Bind
-public class Movie extends SomeObject {
+@Bind(generateAdapters = true)
+public class Movie implements Serializable {
 
     private String genre, title;
 
-    private String imageUrl;
+    private String imageUrl, date;
 
-    private boolean isVisible;
-
-    private Date publicationDate;
 
     public Movie() {
     }
@@ -27,24 +31,9 @@ public class Movie extends SomeObject {
         return genre;
     }
 
+    @Image(PicassoImageProvider.class)
     public String getImageUrl() {
         return imageUrl;
-    }
-
-    public int SomeInteger() {
-        return 0;
-    }
-
-    public Integer someWrappedInteger() {
-        return 0;
-    }
-
-    public long SomeLong() {
-        return 0L;
-    }
-
-    public Long someWrappedLong() {
-        return 0L;
     }
 
     public Movie setImageUrl(String imageUrl) {
@@ -52,12 +41,12 @@ public class Movie extends SomeObject {
         return this;
     }
 
-    public Date getPublicationDate() {
-        return publicationDate;
+    public String getDate() {
+        return date;
     }
 
-    public Movie setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
+    public Movie setDate(String date) {
+        this.date = date;
         return this;
     }
 
@@ -69,15 +58,6 @@ public class Movie extends SomeObject {
     public Movie setTitle(String title) {
         this.title = title;
         return this;
-    }
-
-    public Movie setVisible(boolean isVisible) {
-        this.isVisible = isVisible;
-        return this;
-    }
-
-    public boolean isVisible() {
-        return isVisible;
     }
 
 }

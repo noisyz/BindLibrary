@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.noisyz.bindlibrary.base.AbsUIBinder;
 import com.noisyz.bindlibrary.base.UIBinder;
 import com.noisyz.bindlibrary.property.abs.Property;
 import com.noisyz.bindlibrary.wrappers.PropertyViewWrapper;
@@ -25,7 +24,6 @@ public abstract class ObjectViewBinder<T> implements UIBinder<T>, View.OnAttachS
         initBinders();
     }
 
-
     public ObjectViewBinder registerView(Activity activity) {
         final View viewGroup = ((ViewGroup) activity
                 .findViewById(android.R.id.content)).getChildAt(0);
@@ -45,13 +43,14 @@ public abstract class ObjectViewBinder<T> implements UIBinder<T>, View.OnAttachS
 
     public ObjectViewBinder<T> registerView(View parentView) {
         parentViewRef = new WeakReference<>(parentView);
-        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
-            propertyViewWrapper.registerView((ViewGroup) parentView);
+        if (propertyViewWrappers != null)
+            for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
+                propertyViewWrapper.registerView((ViewGroup) parentView);
         return this;
     }
 
     public View getViewParent() {
-        return parentViewRef.get();
+        return parentViewRef != null ? parentViewRef.get() : null;
     }
 
     public ObjectViewBinder<T> setOnElementClick(int elementId, View.OnClickListener onClickListener) {
@@ -74,16 +73,18 @@ public abstract class ObjectViewBinder<T> implements UIBinder<T>, View.OnAttachS
 
     @Override
     public void bindUI() {
-        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
-            propertyViewWrapper.bindUI();
+        if (propertyViewWrappers != null)
+            for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers)
+                propertyViewWrapper.bindUI();
     }
 
     @Override
     public void setBindObject(T t) {
         this.t = t;
-        for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers) {
-            propertyViewWrapper.setBindObject(t);
-        }
+        if (propertyViewWrappers != null)
+            for (PropertyViewWrapper propertyViewWrapper : propertyViewWrappers) {
+                propertyViewWrapper.setBindObject(t);
+            }
     }
 
     @Override
@@ -93,8 +94,10 @@ public abstract class ObjectViewBinder<T> implements UIBinder<T>, View.OnAttachS
 
     @Override
     public void release() {
-        parentViewRef.clear();
-        parentViewRef = null;
+        if (parentViewRef != null) {
+            parentViewRef.clear();
+            parentViewRef = null;
+        }
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.noisyz.bindexample.model;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,20 +17,20 @@ public class MovieStore {
         for (int i = 0; i < 10; i++) {
 
             ALL_MOVIES
-                    .add(new Movie().setTitle("Marvel's The Avengers 2: Age of Ultron").setGenre("Action").setVisible(i % 2 == 0)
-                            .setPublicationDate(new Date(1430438400000L)).setImageUrl(
+                    .add(new Movie().setTitle("Marvel's The Avengers 2: Age of Ultron").setGenre("Action")
+                            .setDate(new Date(1430438400000L).toGMTString()).setImageUrl(
                                     "https://image.tmdb.org/t/p/original/xkgUhkH2ODT5yy5q6FviW3M2aRB.jpg"));
-            ALL_MOVIES.add(new Movie().setTitle("The Amazing Spider-Man").setGenre("Action").setVisible(i % 2 == 0)
-                    .setPublicationDate(new Date(1341360000000L))
+            ALL_MOVIES.add(new Movie().setTitle("The Amazing Spider-Man").setGenre("Action")
+                    .setDate(new Date(1341360000000L).toGMTString())
                     .setImageUrl("https://image.tmdb.org/t/p/original/dosjP4HDZgUl8vD3qq09cbSF5E2.jpg"));
-            ALL_MOVIES.add(new Movie().setTitle("Terminator 2: Judgment Day").setGenre("Action").setVisible(i % 2 == 0)
-                    .setPublicationDate(new Date(678326400000L))
+            ALL_MOVIES.add(new Movie().setTitle("Terminator 2: Judgment Day").setGenre("Action")
+                    .setDate(new Date(678326400000L).toGMTString())
                     .setImageUrl("https://image.tmdb.org/t/p/original/1hSvGqtRgXTjgxIM6OU7ioeKPwz.jpg"));
-            ALL_MOVIES.add(new Movie().setTitle("From Dusk Till Dawn").setGenre("Horror").setVisible(i % 2 == 0)
-                    .setPublicationDate(new Date(821923200000L))
+            ALL_MOVIES.add(new Movie().setTitle("From Dusk Till Dawn").setGenre("Horror")
+                    .setDate(new Date(821923200000L).toGMTString())
                     .setImageUrl("https://image.tmdb.org/t/p/original/iMmtziO0vr4WY2qr598VA7ulaon.jpg"));
-            ALL_MOVIES.add(new Movie().setTitle("Shaun the Sheep Movie").setGenre("Family").setVisible(i % 2 == 0)
-                    .setPublicationDate(new Date(1423180800000L))
+            ALL_MOVIES.add(new Movie().setTitle("Shaun the Sheep Movie").setGenre("Family")
+                    .setDate(new Date(1423180800000L).toGMTString())
                     .setImageUrl("https://image.tmdb.org/t/p/original/ibfQa5xTUKHfKbVQIIgu9mDjgkS.jpg"));
         }
     }

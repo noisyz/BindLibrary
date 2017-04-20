@@ -1,10 +1,6 @@
 package com.noisyz.bindlibrary.callback.imageproperty;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 import java.lang.ref.WeakReference;
@@ -21,20 +17,20 @@ public abstract class ImageProvider<T> implements BitmapLoader<T> {
         loadBitmap(t);
     }
 
-    protected ImageView getView(){
+    protected ImageView getView() {
         return view.get();
     }
 
     public void showBitmap(Bitmap bitmap) {
         if (view != null) {
             ImageView imageView = view.get();
-            if(imageView!=null) {
+            if (imageView != null) {
                 imageView.setImageBitmap(bitmap);
             }
         }
     }
 
-    public void release(){
+    public void release() {
         view = null;
     }
 }

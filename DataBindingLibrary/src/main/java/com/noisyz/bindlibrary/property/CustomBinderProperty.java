@@ -16,19 +16,24 @@ public class CustomBinderProperty<BO, V extends View, T> extends Property<BO, T>
 
     private IViewBinder<T, V> iViewBinder;
 
-    public CustomBinderProperty(Class<? extends IViewBinder<T, V>> iViewBinder, ValueProvider<BO, T> valueProvider, Key key) {
+    public CustomBinderProperty(String iViewBinder, ValueProvider<BO, T> valueProvider, Key key) {
         super(valueProvider, key);
         try {
-            this.iViewBinder = iViewBinder.newInstance();
+            this.iViewBinder = (IViewBinder<T, V>) Class.forName(iViewBinder).newInstance();
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public PropertyViewWrapper buildPropertyViewWrapper(BO bo) {
-        return new PropertyViewWrapper<>(iViewBinder, getValueProvider(), bo, getKey());
+        if (iViewBinder != null)
+            return new PropertyViewWrapper<>(iViewBinder, getValueProvider(), bo, getKey());
+        else
+            return null;
     }
 }

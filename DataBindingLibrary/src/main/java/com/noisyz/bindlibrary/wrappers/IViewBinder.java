@@ -8,4 +8,5 @@ import android.view.View;
  */
 public interface IViewBinder<T, V extends View> {
     void bindUI(T t, V v);
+
 }

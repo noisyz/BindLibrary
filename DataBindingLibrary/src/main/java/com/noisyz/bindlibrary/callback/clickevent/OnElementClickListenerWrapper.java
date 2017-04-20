@@ -3,21 +3,21 @@ package com.noisyz.bindlibrary.callback.clickevent;
 /**
  * Created by oleg on 13.08.16.
  */
-public class OnElementClickListenerWrapper {
+public class OnElementClickListenerWrapper<T> {
     private int[] ids;
-    private OnElementClickListener onClickListener;
+    private OnElementClickListener<T> onClickListener;
 
-    public OnElementClickListenerWrapper(int elementId, OnElementClickListener onClickListener) {
+    public OnElementClickListenerWrapper(int elementId, OnElementClickListener<T> onClickListener) {
         this.ids = new int[]{elementId};
         this.onClickListener = onClickListener;
     }
 
-    public OnElementClickListenerWrapper(int[] elementIds, OnElementClickListener onClickListener) {
+    public OnElementClickListenerWrapper(int[] elementIds, OnElementClickListener<T> onClickListener) {
         this.ids = elementIds;
         this.onClickListener = onClickListener;
     }
 
-    public OnElementClickListener getOnClickListener() {
+    public OnElementClickListener<T> getOnClickListener() {
         return onClickListener;
     }
 

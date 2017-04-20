@@ -1,5 +1,6 @@
 package com.noisyz.bindlibrary.wrappers.view.image;
 
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.noisyz.bindlibrary.callback.imageproperty.ImageProvider;

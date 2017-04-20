@@ -12,12 +12,9 @@ import com.noisyz.bindlibrary.classbuilder.base.Method;
 
 public class ObjectBinderPattern extends Class {
 
-    public ObjectBinderPattern setType(String type) {
-        String packageName = type.substring(0, type.lastIndexOf("."));
-        addImport(type);
-        setPackageName(packageName);
+    public ObjectBinderPattern(String type) {
+        setPackageName("com.bindlibrary.generated");
         setup(type);
-        return this;
     }
 
     private void setup(String type) {
@@ -25,9 +22,12 @@ public class ObjectBinderPattern extends Class {
         setName(name + "ViewBinder");
         String objectViewBinderClass = "com.noisyz.bindlibrary.base.impl.ObjectViewBinder";
         addImport(objectViewBinderClass);
+        addImport(type);
         addImport("java.util.List");
         addImport("java.util.ArrayList");
         addImport("com.noisyz.bindlibrary.property.abs.Property");
+        addImport("com.noisyz.bindlibrary.models.key.Key");
+        addImport("com.noisyz.bindlibrary.annotation.Type");
         setSuperClass(StringUtils.getShortType(objectViewBinderClass) + "<" + name + ">");
         initConstructor(type);
         initFields();

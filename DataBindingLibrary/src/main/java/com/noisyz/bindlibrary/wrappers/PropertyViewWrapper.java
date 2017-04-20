@@ -60,6 +60,10 @@ public class PropertyViewWrapper<BO, V extends View, T> extends AbsUIBinder<BO> 
         T t = valueProvider.invokeGetter(getBindObject());
         for (V v : vList) {
             iViewBinder.bindUI(t, v);
+            if(iViewBinder instanceof ViewBinder){
+                ViewBinder<T, V> viewBinder = (ViewBinder<T, V>) iViewBinder;
+                viewBinder.addListeners(v);
+            }
         }
     }
 

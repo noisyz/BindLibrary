@@ -1,22 +1,19 @@
 package com.noisyz.bindlibrary.handler;
 
-import com.noisyz.bindlibrary.Environment;
 import com.noisyz.bindlibrary.annotation.Type;
 import com.noisyz.bindlibrary.models.DefaultMethodWrapper;
-import com.noisyz.bindlibrary.models.key.Key;
-import com.noisyz.bindlibrary.models.key.KeyManager;
-import com.noisyz.bindlibrary.models.DefaultMethodItem;
 import com.noisyz.bindlibrary.models.base.ClassWrapper;
 import com.noisyz.bindlibrary.models.base.MethodItem;
 import com.noisyz.bindlibrary.models.base.MethodWrapper;
 import com.noisyz.bindlibrary.models.base.Primitive;
+import com.noisyz.bindlibrary.models.key.Key;
+import com.noisyz.bindlibrary.models.key.KeyManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.VariableElement;
-import javax.tools.Diagnostic;
 
 /**
  * Created by nero232 on 14.04.17.
@@ -55,17 +52,20 @@ public class PrimitivesHandler {
             Key key = KeyManager.buildKeyFromElement(executableElement);
             if (key != null) {
                 MethodWrapper methodWrapper = classWrapper.getMethodWrapper(key);
-                if (methodWrapper == null) {
-                    methodWrapper = new DefaultMethodWrapper();
-                }
+                Type type = getTypeOfElement(executableElement);
+                if (type != null) {
+                    if (methodWrapper == null) {
+                        methodWrapper = new DefaultMethodWrapper(type);
+                    }
 
-                boolean processSuccessfully = processGetter(executableElement, methodWrapper)
-                        || processSetter(executableElement, methodWrapper);
+                    boolean processSuccessfully = processGetter(executableElement, methodWrapper)
+                            || processSetter(executableElement, methodWrapper);
 
-                if (processSuccessfully) {
-                    elements.remove(index);
-                    index--;
-                    classWrapper.putMethodWrapper(key, methodWrapper);
+                    if (processSuccessfully) {
+                        elements.remove(index);
+                        index--;
+                        classWrapper.putMethodWrapper(key, methodWrapper);
+                    }
                 }
             }
         }
@@ -87,12 +87,32 @@ public class PrimitivesHandler {
         return success;
     }
 
+
+    public static Type getTypeOfElement(ExecutableElement executableElement) {
+        String returnType = executableElement.getReturnType().toString();
+        Type type = getTypeOfPrimitiveMethod(returnType);
+        if (type != null) {
+            return type;
+        } else {
+            List<? extends VariableElement> variableElements = executableElement.getParameters();
+            if (!variableElements.isEmpty() && variableElements.size() == 1) {
+                VariableElement variableElement = variableElements.get(0);
+                String variableType = variableElement.asType().toString();
+                type = getTypeOfPrimitiveMethod(variableType);
+                if (type != null) {
+                    return type;
+                }
+            }
+        }
+        return null;
+    }
+
     public static MethodItem buildGetterMethodItem(ExecutableElement executableElement) {
         String returnType = executableElement.getReturnType().toString();
         Type type = getTypeOfPrimitiveMethod(returnType);
         if (type != null) {
             returnType = getReturnTypeOfPrimitiveMethod(type);
-            return new DefaultMethodItem(type, executableElement.getSimpleName().toString(), returnType);
+            return new MethodItem(executableElement.getSimpleName().toString(), returnType);
         } else return null;
     }
 
@@ -104,7 +124,7 @@ public class PrimitivesHandler {
             Type type = getTypeOfPrimitiveMethod(variableType);
             if (type != null) {
                 variableType = getReturnTypeOfPrimitiveMethod(type);
-                return new DefaultMethodItem(type, executableElement.getSimpleName().toString(), variableType);
+                return new MethodItem(executableElement.getSimpleName().toString(), variableType);
             }
         }
         return null;

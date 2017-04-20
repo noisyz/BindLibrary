@@ -1,6 +1,6 @@
 package com.noisyz.bindlibrary.annotation.methods.simple;
 
-import com.noisyz.bindlibrary.annotation.DummyObject;
+
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,8 +12,8 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface Image{
-    Class<?> value() default DummyObject.class; //must extend ImageProvider
+public @interface Image {
+    Class<?> value(); //must extend ImageProvider
 
     String key() default "";
 

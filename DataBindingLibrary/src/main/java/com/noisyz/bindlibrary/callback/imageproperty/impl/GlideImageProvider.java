@@ -13,21 +13,17 @@ import com.noisyz.bindlibrary.callback.imageproperty.abs.AsyncImageProvider;
  */
 public class GlideImageProvider extends AsyncImageProvider<String> {
 
-    private String imageUrl = "null";
-
     @Override
     public void loadBitmap(String s) {
-        if (!imageUrl.equals(s)) {
-            String url = s.replaceAll("\\s", "%20");
-            if (getView() != null)
-                Glide.with(getView().getContext()).load(url).dontAnimate().into(new SimpleTarget<GlideDrawable>() {
-                    @Override
-                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-                        if (getView() != null)
-                            getView().setImageDrawable(resource);
-                    }
-                });
-            imageUrl = url;
-        }
+        String url = s.replaceAll("\\s", "%20");
+        if (getView() != null)
+            Glide.with(getView().getContext()).load(url).dontAnimate().into(new SimpleTarget<GlideDrawable>() {
+                @Override
+                public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
+                    if (getView() != null)
+                        getView().setImageDrawable(resource);
+                }
+            });
     }
 }
+

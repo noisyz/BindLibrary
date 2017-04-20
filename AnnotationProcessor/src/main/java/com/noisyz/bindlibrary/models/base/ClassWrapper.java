@@ -26,6 +26,10 @@ public class ClassWrapper {
         else return null;
     }
 
+    public boolean isGenerateAdapters() {
+        return generateAdapters;
+    }
+
     public Set<Key> methodsKeySet() {
         return methods.keySet();
     }

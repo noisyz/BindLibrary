@@ -10,9 +10,7 @@ import com.noisyz.bindlibrary.handler.impl.ImageHandler;
 import com.noisyz.bindlibrary.handler.impl.SetterHandler;
 import com.noisyz.bindlibrary.handler.impl.SpinnerGetterHandler;
 import com.noisyz.bindlibrary.handler.impl.SpinnerSetterHandler;
-import com.noisyz.bindlibrary.models.key.Key;
 import com.noisyz.bindlibrary.models.base.ClassWrapper;
-import com.noisyz.bindlibrary.models.base.MethodWrapper;
 
 import java.util.Map;
 import java.util.Set;
@@ -24,7 +22,6 @@ import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.TypeElement;
-import javax.tools.Diagnostic;
 
 
 @SupportedAnnotationTypes("com.noisyz.bindlibrary.*")

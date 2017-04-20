@@ -26,10 +26,9 @@ public class ValueProviderPattern extends Class {
     }
 
     private void setup() {
-        String bindObjectPackage = parentClass.substring(0, parentClass.lastIndexOf("."));
         String bindObjectName = StringUtils.getShortType(parentClass);
 
-        String valueProviderPackage = bindObjectPackage + "." + bindObjectName.toLowerCase() +
+        String valueProviderPackage = "com.bindlibrary.generated." + bindObjectName.toLowerCase() +
                 ".valueprovider";
         setPackageName(valueProviderPackage);
         String valueProviderClassName = bindObjectName +
@@ -39,8 +38,7 @@ public class ValueProviderPattern extends Class {
         addImplementation("ValueProvider<" + bindObjectName + ", " + getType() + ">");
 
         addMethod(getGetter(bindObjectName));
-        if (methodWrapper.getSetter() != null)
-            addMethod(getSetter(bindObjectName));
+        addMethod(getSetter(bindObjectName));
     }
 
     private String getType() {
@@ -60,11 +58,13 @@ public class ValueProviderPattern extends Class {
     }
 
     private Method getSetter(String parentName) {
-        return new Method().setName("invokeSetter")
+        Method setter = new Method().setName("invokeSetter")
                 .addArgument(new Field().setTypeAndName(parentName, StringUtils.getTypeAsVariable(parentName)))
-                .addArgument(new Field().setTypeAndName(getType(), StringUtils.getTypeAsVariable(getType())))
-                .addBody(getParentVariable()
-                        + "." + methodWrapper.getSetter().toString()
-                        + "(" + StringUtils.getTypeAsVariable(getType()) + ")");
+                .addArgument(new Field().setTypeAndName(getType(), StringUtils.getTypeAsVariable(getType())));
+        if (methodWrapper.getSetter() != null)
+            setter.addBody(getParentVariable()
+                    + "." + methodWrapper.getSetter().toString()
+                    + "(" + StringUtils.getTypeAsVariable(getType()) + ")");
+        return setter;
     }
 }

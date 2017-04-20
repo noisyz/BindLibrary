@@ -1,9 +1,8 @@
 package com.noisyz.bindlibrary.models;
 
+import com.noisyz.bindlibrary.StringUtils;
 import com.noisyz.bindlibrary.annotation.Type;
-import com.noisyz.bindlibrary.models.base.MethodItem;
 import com.noisyz.bindlibrary.models.base.MethodWrapper;
-import com.noisyz.bindlibrary.models.key.Key;
 
 /**
  * Created by nero232 on 13.04.17.
@@ -17,7 +16,13 @@ public class DefaultMethodWrapper extends MethodWrapper {
     }
 
     @Override
-    public String buildProperty(String className, Key key) {
-        return null;
+    protected String getProperty(String valueProvider, String keyInString) {
+        return "new DefaultProperty(Type." + type + ", new " +
+                StringUtils.getShortType(valueProvider) + "(), " + keyInString + ")";
+    }
+
+    @Override
+    public String getPropertyClassName() {
+        return "com.noisyz.bindlibrary.property.DefaultProperty";
     }
 }

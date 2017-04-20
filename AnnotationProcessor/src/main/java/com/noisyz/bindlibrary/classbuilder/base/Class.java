@@ -52,7 +52,12 @@ public class Class {
     }
 
     public Class addImport(String className) {
-        this.imports.add(className);
+        int alreadyImported = 0;
+        for (String imported : imports)
+            if (imported.equals(className))
+                alreadyImported++;
+        if (alreadyImported == 0)
+            this.imports.add(className);
         return this;
     }
 
@@ -155,10 +160,9 @@ public class Class {
             writer.write(toString());
             writer.flush();
             writer.close();
-            return sourceName;
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return packageName + "." + name;
     }
 }
